@@ -68,6 +68,6 @@ public class Sospechoso extends Persona {
         if(partes.length != 6) {
             throw new IllegalArgumentException("Formato CSV inválido para Sospechoso." + linea);
         }
-        return new Sospechoso(partes[1].trim(), partes[2].trim(), Integer.parseInt(partes[3].trim()), partes[4].trim(), Integer.parseInt(partes[5].trim()));
+        return new Sospechoso(partes[0].trim(), partes[1].trim(), Integer.parseInt(partes[2].trim()), partes[3].trim(), Integer.parseInt(partes[4].trim()));
     }
 }
