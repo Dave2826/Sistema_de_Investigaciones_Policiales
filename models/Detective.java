@@ -2,11 +2,11 @@ package models;
 
 public class Detective extends Persona {
 
-    //Atributos
+    // Atributos
     private String especialidad;
     private String rango;
 
-    //Constructor con validaciones
+    // Constructor con validaciones
     public Detective(String id, String nombre, int edad, String especialidad, String rango) {
         super(id, nombre, edad);
 
@@ -21,7 +21,7 @@ public class Detective extends Persona {
         this.rango = rango;
     }
 
-    //Getters
+    // Getters
     public String getEspecialidad() {
         return especialidad;
     }
@@ -30,13 +30,13 @@ public class Detective extends Persona {
         return rango;
     }
 
-    //getRol()
+    // getRol()
     @Override
     public String getRol() {
         return "Detective";
     }
 
-    //toString()
+    // toString()
     @Override
     public String toString() {
         return super.toString() +
@@ -60,11 +60,11 @@ public class Detective extends Persona {
         }
 
         return new Detective(
-                partes[0],
-                partes[1],
-                Integer.parseInt(partes[2]),
-                partes[3],
-                partes[4]
+                partes[1], // ID
+                partes[2], // Nombre
+                Integer.parseInt(partes[3]), // Edad
+                partes[4], // Especialidad
+                partes[5] // Rango
         );
     }
 }

@@ -7,6 +7,8 @@ import java.util.List;
 import models.Persona;
 import models.Detective;
 import models.Testigo;
+import models.Victima;
+import models.Sospechoso;
 
 public class CasoRepository {
 
@@ -19,7 +21,7 @@ public class CasoRepository {
             for (Persona p : personas) {
                 writer.write(p.toCSV());
                 writer.newLine();
-}
+            }
 
         } catch (IOException e) {
             System.out.println("Error al guardar: " + e.getMessage());
@@ -47,6 +49,12 @@ public class CasoRepository {
                         lista.add(Detective.fromCSV(linea));
                     } else if (linea.startsWith("TESTIGO")) {
                         lista.add(Testigo.fromCSV(linea));
+                    } else if (linea.startsWith("VICTIMA")) {
+                        lista.add(Victima.fromCSV(linea));
+                    } else if (linea.startsWith("SOSPECHOSO")) {
+                        lista.add(Sospechoso.fromCSV(linea));
+                    } else {
+                        System.out.println("Tipo desconocido en línea: " + linea);
                     }
                 } catch (Exception e) {
                     System.out.println("Línea inválida ignorada: " + linea);
