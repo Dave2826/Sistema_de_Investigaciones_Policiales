@@ -45,10 +45,6 @@ public class Caso {
     public void agregarPersona(Persona p) {
         if (p == null)
             throw new IllegalArgumentException("La persona no puede ser nula.");
-        for (Persona existente : personas) {
-            if (existente.equals(p))
-                throw new IllegalArgumentException("La persona ya está registrada en el caso.");
-        }
         personas.add(p);
     }
 
