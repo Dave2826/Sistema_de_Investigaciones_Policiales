@@ -7,7 +7,6 @@ public class EvidenciaDigital extends Evidencia {
     private double tamanoArchivo;
 
     public EvidenciaDigital(String idEvidencia, String descripcion, String fechaRecoleccion, String lugarRecoleccion, String estado, String formato, String hashMD5, double tamanoArchivo) {
-
         super(idEvidencia, descripcion, fechaRecoleccion, lugarRecoleccion, estado);
 
         if (formato == null || formato.isBlank())
@@ -40,6 +39,46 @@ public class EvidenciaDigital extends Evidencia {
                 "Formato: " + formato +
                 "\nHash MD5: " + hashMD5 +
                 "\nTamaño Archivo: " + tamanoArchivo + " MB";
+    }
+
+    @Override
+    public String toCSV() {
+        return getIdEvidencia() + "," +
+               getDescripcion() + "," +
+               getFechaRecoleccion() + "," +
+               getLugarRecoleccion() + "," +
+               getEstado() + "," +
+               formato + "," +
+               hashMD5 + "," +
+               tamanoArchivo;
+    }
+
+    public static EvidenciaDigital fromCSV(String linea) {
+        if (linea == null || linea.isBlank()) {
+            throw new IllegalArgumentException("Línea CSV vacía o nula.");
+        }
+
+        String[] partes = linea.split(",");
+
+        if (partes.length != 8) {
+            throw new IllegalArgumentException("Formato CSV inválido para EvidenciaDigital.");
+        }
+
+        try {
+            String id = partes[0];
+            String descripcion = partes[1];
+            String fecha = partes[2];
+            String lugar = partes[3];
+            String estado = partes[4];
+            String formato = partes[5];
+            String hash = partes[6];
+            double tamano = Double.parseDouble(partes[7]);
+
+            return new EvidenciaDigital(id, descripcion, fecha, lugar, estado, formato, hash, tamano);
+
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("Error al convertir el tamaño del archivo.");
+        }
     }
 
     @Override
