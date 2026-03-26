@@ -16,10 +16,14 @@ import service.CasoServicio;
 public class Main {
     public static void main(String[] args) {
 
+        Caso caso = new Caso("C1", "Caso prueba", "ABIERTO");
         CasoServicio servicio = new CasoServicio();
 
+        // CARGAR DATOS DESDE CSV
+        servicio.cargarDatos(caso);
+
         try {
-            // Crear objetos del sistema
+            // Crear objetos
             Detective detective = new Detective("D01", "Juan Perez", 35, "Homicidios", "Inspector");
             Sospechoso sospechoso = new Sospechoso("S01", "Carlos Lopez", 28, "Antecedentes por robo", 3);
 
@@ -37,19 +41,16 @@ public class Main {
             Reporte reporte = new Reporte(
                     "R01", "Reporte inicial", "Se abre la investigación del caso.");
 
-            Caso caso = new Caso("C01", "Caso Homicidio Norte", "ABIERTO");
-
-            // ALTAS usando la lógica del sistema
+            // ALTAS
             servicio.agregarPersona(caso, detective);
             servicio.agregarPersona(caso, sospechoso);
             servicio.agregarEvidencia(caso, evidencia1);
             servicio.agregarEvidencia(caso, evidencia2);
 
-            // Estas siguen usando el modelo actual
             caso.agregarEntrevista(entrevista);
             caso.agregarReporte(reporte);
 
-            // POLIMORFISMO con clase padre
+            // POLIMORFISMO
             System.out.println("=== POLIMORFISMO PERSONAS ===");
             List<Persona> personas = new ArrayList<>();
             personas.add(detective);
@@ -59,7 +60,7 @@ public class Main {
                 System.out.println(p.getNombre() + " -> " + p.getRol());
             }
 
-            // BÚSQUEDA por atributo
+            // BÚSQUEDA
             System.out.println("\n=== BUSQUEDA DE PERSONA ===");
             Persona personaEncontrada = servicio.buscarPersonaPorId(caso, "S01");
             if (personaEncontrada != null) {
@@ -73,11 +74,9 @@ public class Main {
             if (evidenciaEncontrada != null) {
                 System.out.println("Evidencia encontrada:");
                 evidenciaEncontrada.mostrarDetalles();
-            } else {
-                System.out.println("No se encontró la evidencia.");
             }
 
-            // FILTRADO que retorna sublista
+            // FILTROS
             System.out.println("\n=== FILTRO DE PERSONAS POR ROL ===");
             List<Persona> sospechosos = servicio.filtrarPersonasPorRol(caso, "Sospechoso");
             for (Persona p : sospechosos) {
@@ -90,16 +89,14 @@ public class Main {
                 System.out.println(e);
             }
 
-            // ELIMINACION con Iterator dentro del servicio
+            // ELIMINAR
             System.out.println("\n=== ELIMINAR EVIDENCIA ===");
             boolean eliminada = servicio.eliminarEvidenciaPorId(caso, "E02");
             if (eliminada) {
                 System.out.println("La evidencia E02 fue eliminada correctamente.");
-            } else {
-                System.out.println("No se encontró la evidencia E02 para eliminar.");
             }
 
-            // EXCEPCION EN ACCION: duplicado
+            // EXCEPCIÓN
             System.out.println("\n=== PRUEBA DE EXCEPCION: DUPLICADO ===");
             servicio.agregarEvidencia(caso, evidencia1);
 

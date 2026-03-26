@@ -2,9 +2,11 @@ package models;
 
 public class Testigo extends Persona {
 
+    //Atributos
     private String declaracion;
     private Boolean protegido;
 
+    //Constructor con validaciones
     public Testigo(String id, String nombre, int edad, String declaracion, Boolean protegido) {
         super(id, nombre, edad);
 
@@ -18,6 +20,7 @@ public class Testigo extends Persona {
         this.protegido = protegido;
     }
 
+    //Getters
     public String getDeclaracion() {
         return declaracion;
     }
@@ -26,15 +29,42 @@ public class Testigo extends Persona {
         return protegido;
     }
 
+    //getRol()
     @Override
     public String getRol() {
         return "Testigo";
     }
 
+    //toString()
     @Override
     public String toString() {
         return super.toString() +
                 ", declaracion: " + declaracion +
                 ", protegido: " + protegido;
+    }
+
+    // =========================
+    // PERSISTENCIA (CSV)
+    // =========================
+
+    public String toCSV() {
+        return "TESTIGO," + getId() + "," + getNombre() + "," + getEdad() + "," + declaracion + "," + protegido;
+    }
+
+    //fromCSV()
+    public static Testigo fromCSV(String linea) {
+        String[] partes = linea.split(",");
+
+        if (partes.length < 6) {
+            throw new IllegalArgumentException("Datos incompletos para Testigo");
+        }
+
+        return new Testigo(
+                partes[0],
+                partes[1],
+                Integer.parseInt(partes[2]),
+                partes[3],
+                Boolean.parseBoolean(partes[4])
+        );
     }
 }

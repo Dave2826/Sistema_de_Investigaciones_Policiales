@@ -10,9 +10,27 @@ import models.Caso;
 import models.Evidencia;
 import models.Persona;
 
+import persistence.CasoRepository;
+
 public class CasoServicio {
 
+    private CasoRepository repository = new CasoRepository();
+
+    // =========================
+    // CARGAR DATOS (AL INICIAR)
+    // =========================
+    public void cargarDatos(Caso caso) {
+
+        List<Persona> personas = repository.cargarPersonas();
+
+        for (Persona p : personas) {
+            caso.agregarPersona(p);
+        }
+    }
+
+    // =========================
     // AGREGAR PERSONA
+    // =========================
     public void agregarPersona(Caso caso, Persona persona)
             throws CasoCerradoException, ElementoDuplicadoException {
 
@@ -25,14 +43,20 @@ public class CasoServicio {
 
         for (Persona p : caso.getPersonas()) {
             if (p.getId().equals(persona.getId())) {
-                throw new ElementoDuplicadoException("La persona con ID " + persona.getId() + " ya está registrada en el caso.");
+                throw new ElementoDuplicadoException(
+                        "La persona con ID " + persona.getId() + " ya está registrada en el caso.");
             }
         }
 
         caso.agregarPersona(persona);
+
+        // GUARDAR AUTOMÁTICAMENTE
+        repository.guardarPersonas(caso.getPersonas());
     }
 
+    // =========================
     // AGREGAR EVIDENCIA
+    // =========================
     public void agregarEvidencia(Caso caso, Evidencia evidencia)
             throws CasoCerradoException, ElementoDuplicadoException {
 
@@ -45,20 +69,21 @@ public class CasoServicio {
 
         for (Evidencia e : caso.getEvidencias()) {
             if (e.getIdEvidencia().equals(evidencia.getIdEvidencia())) {
-                throw new ElementoDuplicadoException("La evidencia con ID " + evidencia.getIdEvidencia() + " ya está registrada en el caso.");
+                throw new ElementoDuplicadoException(
+                        "La evidencia con ID " + evidencia.getIdEvidencia() + " ya está registrada en el caso.");
             }
         }
 
         caso.agregarEvidencia(evidencia);
     }
 
-    // BUSCAR PERSONA POR ID
+    // =========================
+    // BUSCAR PERSONA
+    // =========================
     public Persona buscarPersonaPorId(Caso caso, String id) {
+
         if (caso == null) {
             throw new IllegalArgumentException("El caso no puede ser nulo.");
-        }
-        if (id == null || id.isBlank()) {
-            throw new IllegalArgumentException("El ID no puede ser nulo o vacío.");
         }
 
         for (Persona p : caso.getPersonas()) {
@@ -66,16 +91,17 @@ public class CasoServicio {
                 return p;
             }
         }
+
         return null;
     }
 
-    // BUSCAR EVIDENCIA POR ID
+    // =========================
+    // BUSCAR EVIDENCIA
+    // =========================
     public Evidencia buscarEvidenciaPorId(Caso caso, String idEvidencia) {
+
         if (caso == null) {
             throw new IllegalArgumentException("El caso no puede ser nulo.");
-        }
-        if (idEvidencia == null || idEvidencia.isBlank()) {
-            throw new IllegalArgumentException("El ID de la evidencia no puede ser nulo o vacío.");
         }
 
         for (Evidencia e : caso.getEvidencias()) {
@@ -83,17 +109,14 @@ public class CasoServicio {
                 return e;
             }
         }
+
         return null;
     }
 
-    // FILTRAR EVIDENCIAS POR ESTADO
+    // =========================
+    // FILTRAR EVIDENCIAS
+    // =========================
     public List<Evidencia> filtrarEvidenciasPorEstado(Caso caso, String estado) {
-        if (caso == null) {
-            throw new IllegalArgumentException("El caso no puede ser nulo.");
-        }
-        if (estado == null || estado.isBlank()) {
-            throw new IllegalArgumentException("El estado no puede ser nulo o vacío.");
-        }
 
         List<Evidencia> resultado = new ArrayList<>();
 
@@ -106,14 +129,10 @@ public class CasoServicio {
         return resultado;
     }
 
-    // FILTRAR PERSONAS POR ROL
+    // =========================
+    // FILTRAR PERSONAS
+    // =========================
     public List<Persona> filtrarPersonasPorRol(Caso caso, String rol) {
-        if (caso == null) {
-            throw new IllegalArgumentException("El caso no puede ser nulo.");
-        }
-        if (rol == null || rol.isBlank()) {
-            throw new IllegalArgumentException("El rol no puede ser nulo o vacío.");
-        }
 
         List<Persona> resultado = new ArrayList<>();
 
@@ -126,25 +145,22 @@ public class CasoServicio {
         return resultado;
     }
 
-    // ELIMINAR EVIDENCIA POR ID (USANDO ITERATOR)
+    // =========================
+    // ELIMINAR EVIDENCIA
+    // =========================
     public boolean eliminarEvidenciaPorId(Caso caso, String idEvidencia)
             throws CasoCerradoException {
 
-        if (caso == null) {
-            throw new IllegalArgumentException("El caso no puede ser nulo.");
-        }
-        if (idEvidencia == null || idEvidencia.isBlank()) {
-            throw new IllegalArgumentException("El ID de la evidencia no puede ser nulo o vacío.");
-        }
-
         if ("CERRADO".equalsIgnoreCase(caso.getEstado())) {
-            throw new CasoCerradoException("No se puede eliminar evidencia porque el caso " + caso.getIdCaso() + " está cerrado.");
+            throw new CasoCerradoException(
+                    "No se puede eliminar evidencia porque el caso " + caso.getIdCaso() + " está cerrado.");
         }
 
         Iterator<Evidencia> iterator = caso.getEvidenciasInternas().iterator();
 
         while (iterator.hasNext()) {
             Evidencia e = iterator.next();
+
             if (e.getIdEvidencia().equals(idEvidencia)) {
                 iterator.remove();
                 return true;

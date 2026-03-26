@@ -2,9 +2,11 @@ package models;
 
 public class Detective extends Persona {
 
+    //Atributos
     private String especialidad;
     private String rango;
 
+    //Constructor con validaciones
     public Detective(String id, String nombre, int edad, String especialidad, String rango) {
         super(id, nombre, edad);
 
@@ -14,10 +16,12 @@ public class Detective extends Persona {
         if (rango == null || rango.trim().isEmpty()) {
             throw new IllegalArgumentException("El rango es obligatorio");
         }
+
         this.especialidad = especialidad;
         this.rango = rango;
     }
 
+    //Getters
     public String getEspecialidad() {
         return especialidad;
     }
@@ -26,15 +30,41 @@ public class Detective extends Persona {
         return rango;
     }
 
+    //getRol()
     @Override
     public String getRol() {
         return "Detective";
     }
 
+    //toString()
     @Override
     public String toString() {
         return super.toString() +
                 ", especialidad: " + especialidad +
                 ", rango: " + rango;
+    }
+
+    // =========================
+    // CSV (PERSISTENCIA)
+    // =========================
+
+    public String toCSV() {
+        return "DETECTIVE," + getId() + "," + getNombre() + "," + getEdad() + "," + especialidad + "," + rango;
+    }
+
+    public static Detective fromCSV(String linea) {
+        String[] partes = linea.split(",");
+
+        if (partes.length < 6) {
+            throw new IllegalArgumentException("Datos incompletos para Detective");
+        }
+
+        return new Detective(
+                partes[0],
+                partes[1],
+                Integer.parseInt(partes[2]),
+                partes[3],
+                partes[4]
+        );
     }
 }

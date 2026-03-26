@@ -47,6 +47,46 @@ public class EvidenciaForense extends Evidencia {
     }
 
     @Override
+    public String toCSV() {
+        return getIdEvidencia() + "," +
+               getDescripcion() + "," +
+               getFechaRecoleccion() + "," +
+               getLugarRecoleccion() + "," +
+               getEstado() + "," +
+               tipoAnalisis + "," +
+               laboratorio + "," +
+               resultado;
+    }
+
+    public static EvidenciaForense fromCSV(String linea) {
+        if (linea == null || linea.isBlank()) {
+            throw new IllegalArgumentException("Línea CSV vacía o nula.");
+        }
+
+        String[] partes = linea.split(",");
+
+        if (partes.length != 8) {
+            throw new IllegalArgumentException("Formato CSV inválido para EvidenciaForense.");
+        }
+
+        try {
+            String id = partes[0];
+            String descripcion = partes[1];
+            String fecha = partes[2];
+            String lugar = partes[3];
+            String estado = partes[4];
+            String tipoAnalisis = partes[5];
+            String laboratorio = partes[6];
+            String resultado = partes[7];
+
+            return new EvidenciaForense(id, descripcion, fecha, lugar, estado, tipoAnalisis, laboratorio, resultado);
+
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Error al procesar la línea CSV.");
+        }
+    }
+
+    @Override
     public String toString() {
         return super.toString() +
                 "\nTipo Análisis: " + tipoAnalisis +
