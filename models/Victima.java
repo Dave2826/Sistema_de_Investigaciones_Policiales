@@ -55,7 +55,7 @@ public class Victima extends Persona {
         if(partes.length != 6) {
             throw new IllegalArgumentException("Formato CSV inválido para la víctima.");
         }
-        return new Victima(partes[1].trim(), partes[2].trim(), Integer.parseInt(partes[3].trim()), partes[4].trim(), partes[5].trim());
+        return new Victima(partes[0].trim(), partes[1].trim(), Integer.parseInt(partes[2].trim()), partes[3].trim(), partes[4].trim());
     }
 
     //Uso del toString()
