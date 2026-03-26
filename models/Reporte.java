@@ -47,4 +47,13 @@ public class Reporte implements Documentable {
     public String documentar() {
         return "Reporte [" + id + "] - " + titulo + "\n" + contenido;
     }
+
+    public String toCSV() {
+        return id + "," + titulo + "," + contenido;
+    }
+
+    public static Reporte fromCSV(String csv) {
+        String[] partes = csv.split(",");
+        return new Reporte(partes[0], partes[1], partes[2]);
+    }
 }
