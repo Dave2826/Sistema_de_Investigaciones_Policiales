@@ -17,13 +17,9 @@ public class CasoRepository {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(ARCHIVO))) {
 
             for (Persona p : personas) {
-                if (p instanceof Detective) {
-                    writer.write(((Detective) p).toCSV());
-                } else if (p instanceof Testigo) {
-                    writer.write(((Testigo) p).toCSV());
-                }
+                writer.write(p.toCSV());
                 writer.newLine();
-            }
+}
 
         } catch (IOException e) {
             System.out.println("Error al guardar: " + e.getMessage());

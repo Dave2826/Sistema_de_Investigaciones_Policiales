@@ -39,16 +39,13 @@ public class Caso {
 
     public List<Persona>    getPersonas()    { return Collections.unmodifiableList(personas); }
     public List<Evidencia>  getEvidencias()  { return Collections.unmodifiableList(evidencias); }
+    public List<Evidencia> getEvidenciasInternas() { return evidencias; }
     public List<Entrevista> getEntrevistas() { return Collections.unmodifiableList(entrevistas); }
     public List<Reporte>    getReportes()    { return Collections.unmodifiableList(reportes); }
 
     public void agregarPersona(Persona p) {
         if (p == null)
             throw new IllegalArgumentException("La persona no puede ser nula.");
-        for (Persona existente : personas) {
-            if (existente.equals(p))
-                throw new IllegalArgumentException("La persona ya está registrada en el caso.");
-        }
         personas.add(p);
     }
 

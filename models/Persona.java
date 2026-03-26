@@ -1,10 +1,12 @@
 package models;
 
 public abstract class Persona {
+    //Atributos
     private String id;
     private String nombre;
     private int edad;
 
+    //constructor con validaciones
     public Persona(String id, String nombre, int edad) {
         if (id == null || id.trim().isEmpty()) {
             throw new IllegalArgumentException("El ID no puede ser nulo o vacío");
@@ -21,6 +23,7 @@ public abstract class Persona {
         this.edad = edad;
     }
 
+    //Getters
     public String getId() {
         return id;
     }
@@ -31,6 +34,14 @@ public abstract class Persona {
 
     public int getEdad() {
         return edad;
+    }
+
+    //Setters con validaciones
+    public void setId(String id) {
+        if(id == null || id.trim().isEmpty()) {
+            throw new IllegalArgumentException("El ID no puede ser nulo o vacío. Coloque un ID válido.");
+        }
+        this.id = id;
     }
 
     public void setNombre(String nombre) {
@@ -47,12 +58,17 @@ public abstract class Persona {
         this.edad = edad;
     }
 
+    //Método abstracto para obtener el rol de la persona
     public abstract String getRol();
 
+    //toString()
     @Override
     public String toString() {
         return "Persona [ id: " + id
                 + ", nombre: " + nombre
                 + ", edad: " + edad + "]";
     }
+
+    //Método toCSV()
+    public abstract String toCSV();
 }
