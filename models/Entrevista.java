@@ -31,6 +31,45 @@ public class Entrevista implements Documentable {
     public Detective getDetective() { return detective; }
     public Persona getEntrevistado() { return entrevistado; }
 
+    public String toCSV() {
+    return String.join(";",
+        escaparCSV(id),
+        escaparCSV(fecha),
+        escaparCSV(notas != null ? notas : ""),
+        escaparCSV(detective.getId()),
+        escaparCSV(entrevistado.getId())
+    );
+}
+
+    public static Entrevista fromCSV(String linea, Detective detective, Persona entrevistado) {
+        if (linea == null || linea.isBlank())
+            throw new IllegalArgumentException("La línea CSV no puede ser nula o vacía.");
+        String[] partes = linea.split(";", -1);
+        if (partes.length < 5)
+            throw new IllegalArgumentException(
+            "Formato CSV inválido: se esperaban 5 columnas, se encontraron " + partes.length + ".");
+        return new Entrevista(
+            desescaparCSV(partes[0]),
+            desescaparCSV(partes[1]),
+            desescaparCSV(partes[2]),
+            detective,
+            entrevistado
+        );
+    }
+
+    private static String escaparCSV(String valor) {
+        if (valor == null) return "\"\"";
+        return "\"" + valor.replace("\"", "\"\"") + "\"";
+    }
+
+    private static String desescaparCSV(String valor) {
+        if (valor == null) return "";
+        String v = valor.trim();
+        if (v.startsWith("\"") && v.endsWith("\""))
+            v = v.substring(1, v.length() - 1);
+        return v.replace("\"\"", "\"");
+    }
+
     @Override
     public String generarResumen() {
         return "Entrevista [ID: " + id + "] | Fecha: " + fecha +
