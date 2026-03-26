@@ -34,6 +34,12 @@ public class CasoServicio {
     public void agregarPersona(Caso caso, Persona persona)
             throws CasoCerradoException, ElementoDuplicadoException {
 
+        // VALIDACIÓN: CASO CERRADO
+        if ("CERRADO".equalsIgnoreCase(caso.getEstado())) {
+            throw new CasoCerradoException(
+                    "No se puede agregar personas porque el caso " + caso.getIdCaso() + " está cerrado.");
+        }
+
         if (caso == null) {
             throw new IllegalArgumentException("El caso no puede ser nulo.");
         }
@@ -41,6 +47,7 @@ public class CasoServicio {
             throw new IllegalArgumentException("La persona no puede ser nula.");
         }
 
+        // VALIDACIÓN: DUPLICADOS
         for (Persona p : caso.getPersonas()) {
             if (p.getId().equals(persona.getId())) {
                 throw new ElementoDuplicadoException(
@@ -60,6 +67,12 @@ public class CasoServicio {
     public void agregarEvidencia(Caso caso, Evidencia evidencia)
             throws CasoCerradoException, ElementoDuplicadoException {
 
+        // VALIDACIÓN: CASO CERRADO
+        if ("CERRADO".equalsIgnoreCase(caso.getEstado())) {
+            throw new CasoCerradoException(
+                    "No se puede agregar evidencia porque el caso " + caso.getIdCaso() + " está cerrado.");
+        }
+
         if (caso == null) {
             throw new IllegalArgumentException("El caso no puede ser nulo.");
         }
@@ -67,6 +80,7 @@ public class CasoServicio {
             throw new IllegalArgumentException("La evidencia no puede ser nula.");
         }
 
+        // VALIDACIÓN: DUPLICADOS
         for (Evidencia e : caso.getEvidencias()) {
             if (e.getIdEvidencia().equals(evidencia.getIdEvidencia())) {
                 throw new ElementoDuplicadoException(
@@ -151,6 +165,7 @@ public class CasoServicio {
     public boolean eliminarEvidenciaPorId(Caso caso, String idEvidencia)
             throws CasoCerradoException {
 
+        // VALIDACIÓN: CASO CERRADO
         if ("CERRADO".equalsIgnoreCase(caso.getEstado())) {
             throw new CasoCerradoException(
                     "No se puede eliminar evidencia porque el caso " + caso.getIdCaso() + " está cerrado.");
