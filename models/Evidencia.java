@@ -84,6 +84,14 @@ public abstract class Evidencia implements Documentable {
         System.out.println(toString());
     }
 
+    public String toCSV() {
+        return idEvidencia + "," +
+               descripcion + "," +
+               fechaRecoleccion + "," +
+               lugarRecoleccion + "," +
+               estado;
+    }
+
     @Override
     public String toString() {
         return "ID: " + idEvidencia +
