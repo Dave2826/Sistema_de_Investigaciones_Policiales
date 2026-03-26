@@ -91,7 +91,7 @@ public class Caso {
 
         sb.append("\n-- Reportes (").append(reportes.size()).append(") --\n");
         for (Reporte r : reportes)
-            sb.append("  * ").append(r.getTitulo()).append("\n");
+            sb.append("  * ").append(r.generarResumen()).append("\n");
 
         return sb.toString();
     }
