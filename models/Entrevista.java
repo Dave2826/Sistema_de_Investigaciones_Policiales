@@ -44,6 +44,14 @@ public class Entrevista implements Documentable {
     }
 
     @Override
+public String documentar() {
+    return "Entrevista [" + id + "] - Fecha: " + fecha +
+           "\nDetective: " + detective.getNombre() +
+           "\nEntrevistado: " + entrevistado.getNombre() +
+           "\nNotas: " + (notas != null ? notas : "Sin notas");
+}
+
+    @Override
     public String toString() {
         return "Entrevista{" +
                "id='" + id + '\'' +
