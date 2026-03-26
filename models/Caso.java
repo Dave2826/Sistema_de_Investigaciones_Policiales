@@ -39,6 +39,7 @@ public class Caso {
 
     public List<Persona>    getPersonas()    { return Collections.unmodifiableList(personas); }
     public List<Evidencia>  getEvidencias()  { return Collections.unmodifiableList(evidencias); }
+    public List<Evidencia> getEvidenciasInternas() { return evidencias; }
     public List<Entrevista> getEntrevistas() { return Collections.unmodifiableList(entrevistas); }
     public List<Reporte>    getReportes()    { return Collections.unmodifiableList(reportes); }
 
