@@ -1,5 +1,7 @@
 package models;
 
+import exceptions.CSVInvalidoException;
+
 public class Sospechoso extends Persona {
     // Atributos
     private String antecedentes;
@@ -64,15 +66,19 @@ public class Sospechoso extends Persona {
     }
 
     // fromCSV()
-    public static Sospechoso fromCSV(String linea) {
+    public static Sospechoso fromCSV(String linea) throws CSVInvalidoException {
         String[] partes = linea.split(",", -1);
         if (partes.length != 6) {
-            throw new IllegalArgumentException("Formato CSV inválido para Sospechoso." + linea);
+            throw new CSVInvalidoException("Formato CSV inválido para Sospechoso." + linea);
         }
-        return new Sospechoso(partes[1], // ID
-                partes[2], // Nombre
-                Integer.parseInt(partes[3]), // Edad
-                partes[4], // Antecedentes
-                Integer.parseInt(partes[5])); // Nivel de sospecha
+        try {
+            return new Sospechoso(partes[1], // ID
+                    partes[2], // Nombre
+                    Integer.parseInt(partes[3]), // Edad
+                    partes[4], // Antecedentes
+                    Integer.parseInt(partes[5])); // Nivel de sospecha
+        } catch (NumberFormatException e) {
+            throw new CSVInvalidoException("Error al convertir número en Sospechoso: " + linea);
+        }
     }
 }

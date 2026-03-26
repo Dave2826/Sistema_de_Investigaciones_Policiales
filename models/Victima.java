@@ -1,5 +1,7 @@
 package models;
 
+import exceptions.CSVInvalidoException;
+
 public class Victima extends Persona {
     // Atributos
     private String estado;
@@ -50,16 +52,20 @@ public class Victima extends Persona {
     }
 
     // fromCSV()
-    public static Victima fromCSV(String linea) {
+    public static Victima fromCSV(String linea) throws CSVInvalidoException {
         String[] partes = linea.split(",", -1);
         if (partes.length != 6) {
-            throw new IllegalArgumentException("Formato CSV inválido para la víctima.");
+            throw new CSVInvalidoException("Formato CSV inválido para la víctima." + linea);
         }
-        return new Victima(partes[1], // ID
-                partes[2], // Nombre
-                Integer.parseInt(partes[3]), // Edad
-                partes[4], // Estado
-                partes[5]); // Tipo de delito
+        try {
+            return new Victima(partes[1], // ID
+                    partes[2], // Nombre
+                    Integer.parseInt(partes[3]), // Edad
+                    partes[4], // Estado
+                    partes[5]); // Tipo de delito
+        } catch (NumberFormatException e) {
+            throw new CSVInvalidoException("Error al convertir número en Víctima: " + linea);
+        }
 
     }
 
