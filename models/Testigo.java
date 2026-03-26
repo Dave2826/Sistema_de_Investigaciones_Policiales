@@ -37,4 +37,28 @@ public class Testigo extends Persona {
                 ", declaracion: " + declaracion +
                 ", protegido: " + protegido;
     }
+
+    // =========================
+    // PERSISTENCIA (CSV)
+    // =========================
+
+    public String toCSV() {
+        return "TESTIGO," + getId() + "," + getNombre() + "," + getEdad() + "," + declaracion + "," + protegido;
+    }
+
+    public static Testigo fromCSV(String linea) {
+        String[] partes = linea.split(",");
+
+        if (partes.length < 6) {
+            throw new IllegalArgumentException("Datos incompletos para Testigo");
+        }
+
+        return new Testigo(
+                partes[1],
+                partes[2],
+                Integer.parseInt(partes[3]),
+                partes[4],
+                Boolean.parseBoolean(partes[5])
+        );
+    }
 }
