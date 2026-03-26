@@ -25,6 +25,12 @@ public class Entrevista implements Documentable {
         this.entrevistado = entrevistado;
     }
 
+    public String getId() { return id; }
+    public String getFecha() { return fecha; }
+    public String getNotas() { return notas; }
+    public Detective getDetective() { return detective; }
+    public Persona getEntrevistado() { return entrevistado; }
+
     @Override
     public String generarResumen() {
         return "Entrevista [ID: " + id + "] | Fecha: " + fecha +
