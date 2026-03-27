@@ -4,67 +4,78 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import exceptions.CSVInvalidoException;
+import models.Caso;
 import models.Persona;
-import models.Detective;
-import models.Testigo;
-import models.Victima;
-import models.Sospechoso;
 
 public class CasoRepository {
 
-    private static final String ARCHIVO = "personas.csv";
+    private static final String ARCHIVO_PERSONAS = "personas.csv";
+    private static final String ARCHIVO_CASOS = "casos.csv";
 
+    // PERSONAS
     public void guardarPersonas(List<Persona> personas) {
-
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(ARCHIVO))) {
-
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(ARCHIVO_PERSONAS))) {
             for (Persona p : personas) {
                 writer.write(p.toCSV());
                 writer.newLine();
             }
-
         } catch (IOException e) {
-            System.out.println("Error al guardar: " + e.getMessage());
+            System.out.println("Error al guardar personas: " + e.getMessage());
         }
     }
 
     public List<Persona> cargarPersonas() {
-
         List<Persona> lista = new ArrayList<>();
-
-        File archivo = new File(ARCHIVO);
-
-        if (!archivo.exists()) {
+        File archivo = new File(ARCHIVO_PERSONAS);
+        if (!archivo.exists())
             return lista;
-        }
 
-        try (BufferedReader reader = new BufferedReader(new FileReader(ARCHIVO))) {
-
+        try (BufferedReader reader = new BufferedReader(new FileReader(ARCHIVO_PERSONAS))) {
             String linea;
-
             while ((linea = reader.readLine()) != null) {
-
                 try {
-                    if (linea.startsWith("DETECTIVE")) {
-                        lista.add(Detective.fromCSV(linea));
-                    } else if (linea.startsWith("TESTIGO")) {
-                        lista.add(Testigo.fromCSV(linea));
-                    } else if (linea.startsWith("VICTIMA")) {
-                        lista.add(Victima.fromCSV(linea));
-                    } else if (linea.startsWith("SOSPECHOSO")) {
-                        lista.add(Sospechoso.fromCSV(linea));
-                    } else {
-                        System.out.println("Tipo desconocido en línea: " + linea);
-                    }
+                    lista.add(Persona.fromCSV(linea));
+                } catch (CSVInvalidoException e) {
+                    System.out.println("Línea inválida ignorada: " + linea);
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Error al leer personas: " + e.getMessage());
+        }
+        return lista;
+    }
+
+    // CASOS
+    public void guardarCasos(List<Caso> casos) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(ARCHIVO_CASOS))) {
+            for (Caso c : casos) {
+                writer.write(c.toCSV());
+                writer.newLine();
+            }
+        } catch (IOException e) {
+            System.out.println("Error al guardar casos: " + e.getMessage());
+        }
+    }
+
+    public List<Caso> cargarCasos() {
+        List<Caso> lista = new ArrayList<>();
+        File archivo = new File(ARCHIVO_CASOS);
+        if (!archivo.exists())
+            return lista;
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(ARCHIVO_CASOS))) {
+            String linea;
+            while ((linea = reader.readLine()) != null) {
+                try {
+                    lista.add(Caso.fromCSV(linea));
                 } catch (Exception e) {
                     System.out.println("Línea inválida ignorada: " + linea);
                 }
             }
-
         } catch (IOException e) {
-            System.out.println("Error al leer: " + e.getMessage());
+            System.out.println("Error al leer casos: " + e.getMessage());
         }
-
         return lista;
     }
 }
