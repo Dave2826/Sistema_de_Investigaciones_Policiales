@@ -9,7 +9,7 @@ public class Testigo extends Persona {
     private boolean protegido;
 
     // Constructor con validaciones
-    public Testigo(String id, String nombre, int edad, String declaracion, Boolean protegido) {
+    public Testigo(String id, String nombre, int edad, String declaracion, boolean protegido) {
         super(id, nombre, edad);
 
         if (declaracion == null || declaracion.isBlank())
@@ -42,10 +42,7 @@ public class Testigo extends Persona {
                 ", protegido: " + protegido;
     }
 
-    // =========================
     // PERSISTENCIA (CSV)
-    // =========================
-
     public String toCSV() {
         return "TESTIGO," + getId() + "," + getNombre() + "," + getEdad() + "," + declaracion + "," + protegido;
     }
