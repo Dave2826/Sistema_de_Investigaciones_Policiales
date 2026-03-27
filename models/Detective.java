@@ -1,5 +1,7 @@
 package models;
 
+import exceptions.CSVInvalidoException;
+
 public class Detective extends Persona {
 
     // Atributos
@@ -52,19 +54,22 @@ public class Detective extends Persona {
         return "DETECTIVE," + getId() + "," + getNombre() + "," + getEdad() + "," + especialidad + "," + rango;
     }
 
-    public static Detective fromCSV(String linea) {
+    public static Detective fromCSV(String linea) throws CSVInvalidoException {
         String[] partes = linea.split(",");
 
         if (partes.length < 6) {
-            throw new IllegalArgumentException("Datos incompletos para Detective");
+            throw new CSVInvalidoException("Datos incompletos para Detective" + linea);
         }
-
-        return new Detective(
-                partes[1], // ID
-                partes[2], // Nombre
-                Integer.parseInt(partes[3]), // Edad
-                partes[4], // Especialidad
-                partes[5] // Rango
-        );
+        try {
+            return new Detective(
+                    partes[1], // ID
+                    partes[2], // Nombre
+                    Integer.parseInt(partes[3]), // Edad
+                    partes[4], // Especialidad
+                    partes[5] // Rango
+            );
+        } catch (NumberFormatException e) {
+            throw new CSVInvalidoException("Error al convertir número en Detective: " + linea);
+        }
     }
 }

@@ -1,11 +1,13 @@
 package models;
 
+import exceptions.CSVInvalidoException;
+
 public class Sospechoso extends Persona {
-    //Atributos
+    // Atributos
     private String antecedentes;
     private int nivelSospecha;
 
-    //Constructor con validaciones
+    // Constructor con validaciones
     public Sospechoso(String id, String nombre, int edad, String antecedentes, int nivelSospecha) {
         super(id, nombre, edad);
 
@@ -19,7 +21,7 @@ public class Sospechoso extends Persona {
         this.nivelSospecha = nivelSospecha;
     }
 
-    //Getters
+    // Getters
     public String getAntecedentes() {
         return antecedentes;
     }
@@ -28,11 +30,11 @@ public class Sospechoso extends Persona {
         return nivelSospecha;
     }
 
-
-    //Setter con validación
+    // Setter con validación
     public void setAntecedentes(String antecedentes) {
-        if(antecedentes == null || antecedentes.trim().isEmpty()) {
-            throw new IllegalArgumentException("Los antecedentes no pueden ser nulos o vacíos. Coloque los antecedentes del sospechoso.");
+        if (antecedentes == null || antecedentes.trim().isEmpty()) {
+            throw new IllegalArgumentException(
+                    "Los antecedentes no pueden ser nulos o vacíos. Coloque los antecedentes del sospechoso.");
         }
         this.antecedentes = antecedentes;
     }
@@ -44,30 +46,39 @@ public class Sospechoso extends Persona {
         this.nivelSospecha = nivelSospecha;
     }
 
-    //Override de getRol()
+    // Override de getRol()
     @Override
     public String getRol() {
         return "Sospechoso";
     }
 
-    //Override de toString()
+    // Override de toString()
     @Override
     public String toString() {
         return super.toString() + ", antecedentes: " + antecedentes + ", nivel de sospecha: " + nivelSospecha;
     }
 
-    //Método toCSV()
+    // Método toCSV()
     @Override
     public String toCSV() {
-        return "Sospechoso" + "," + getId() + "," + getNombre() + "," + getEdad() + "," + antecedentes + "," + nivelSospecha;
+        return "Sospechoso" + "," + getId() + "," + getNombre() + "," + getEdad() + "," + antecedentes + ","
+                + nivelSospecha;
     }
 
-    //fromCSV()
-    public static Sospechoso fromCSV(String linea) {
+    // fromCSV()
+    public static Sospechoso fromCSV(String linea) throws CSVInvalidoException {
         String[] partes = linea.split(",", -1);
-        if(partes.length != 6) {
-            throw new IllegalArgumentException("Formato CSV inválido para Sospechoso." + linea);
+        if (partes.length != 6) {
+            throw new CSVInvalidoException("Formato CSV inválido para Sospechoso." + linea);
         }
-        return new Sospechoso(partes[0].trim(), partes[1].trim(), Integer.parseInt(partes[2].trim()), partes[3].trim(), Integer.parseInt(partes[4].trim()));
+        try {
+            return new Sospechoso(partes[1], // ID
+                    partes[2], // Nombre
+                    Integer.parseInt(partes[3]), // Edad
+                    partes[4], // Antecedentes
+                    Integer.parseInt(partes[5])); // Nivel de sospecha
+        } catch (NumberFormatException e) {
+            throw new CSVInvalidoException("Error al convertir número en Sospechoso: " + linea);
+        }
     }
 }

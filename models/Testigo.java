@@ -1,5 +1,7 @@
 package models;
 
+import exceptions.CSVInvalidoException;
+
 public class Testigo extends Persona {
 
     // Atributos
@@ -30,12 +32,19 @@ public class Testigo extends Persona {
     }
 
     // Rol
+
+    // getRol()
+
     @Override
     public String getRol() {
         return "Testigo";
     }
 
+
     // toString
+
+    // toString()
+
     @Override
     public String toString() {
         return super.toString() +
@@ -51,12 +60,29 @@ public class Testigo extends Persona {
         return "TESTIGO," + getId() + "," + getNombre() + "," + getEdad() + "," + declaracion + "," + protegido;
     }
 
+
     public static Testigo fromCSV(String linea) {
+
+    // fromCSV()
+    public static Testigo fromCSV(String linea) throws CSVInvalidoException {
+
         String[] partes = linea.split(",");
 
         if (partes.length < 6) {
-            throw new IllegalArgumentException("Datos incompletos para Testigo");
+            throw new CSVInvalidoException("Datos incompletos para Testigo" + linea);
         }
+        try {
+            return new Testigo(
+                    partes[1], // ID
+                    partes[2], // Nombre
+                    Integer.parseInt(partes[3]), // Edad
+                    partes[4], // Declaración
+                    Boolean.parseBoolean(partes[5]) // Protegido
+            );
+        } catch (NumberFormatException e) {
+            throw new CSVInvalidoException("Error al convertir número en Testigo: " + linea);
+        }
+
 
         String id = partes[1];
         String nombre = partes[2];
