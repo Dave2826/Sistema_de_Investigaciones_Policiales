@@ -3,8 +3,7 @@
 ## Información académica
 
 - Asignatura: Programación Orientada a Objetos  
-- Carrera: Tecnologías de la Información / Desarrollo de Software  
-- Institución: Tecnológico  
+- Institución: Tecnológico de software
 - Cuatrimestre: Segundo  
 - Tipo de proyecto: Proyecto final  
 
