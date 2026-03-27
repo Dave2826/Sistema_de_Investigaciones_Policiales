@@ -62,9 +62,7 @@ public class Main {
             caso.agregarEntrevista(entrevista);
             caso.agregarReporte(reporte);
 
-            // ========================================
             // IMPRESION ESTRUCTURADA
-            // ========================================
             System.out.println("========================================");
             System.out.println("  SISTEMA DE INVESTIGACIONES POLICIALES ");
             System.out.println("========================================");

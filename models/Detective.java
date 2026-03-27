@@ -46,10 +46,6 @@ public class Detective extends Persona {
                 ", rango: " + rango;
     }
 
-    // =========================
-    // CSV (PERSISTENCIA)
-    // =========================
-
     public String toCSV() {
         return "DETECTIVE," + getId() + "," + getNombre() + "," + getEdad() + "," + especialidad + "," + rango;
     }
