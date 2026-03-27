@@ -1,12 +1,14 @@
 package models;
 
+import exceptions.CSVInvalidoException;
+
 public abstract class Persona {
-    //Atributos
+    // Atributos
     private String id;
     private String nombre;
     private int edad;
 
-    //constructor con validaciones
+    // constructor con validaciones
     public Persona(String id, String nombre, int edad) {
         if (id == null || id.trim().isEmpty()) {
             throw new IllegalArgumentException("El ID no puede ser nulo o vacío");
@@ -23,7 +25,7 @@ public abstract class Persona {
         this.edad = edad;
     }
 
-    //Getters
+    // Getters
     public String getId() {
         return id;
     }
@@ -36,9 +38,9 @@ public abstract class Persona {
         return edad;
     }
 
-    //Setters con validaciones
+    // Setters con validaciones
     public void setId(String id) {
-        if(id == null || id.trim().isEmpty()) {
+        if (id == null || id.trim().isEmpty()) {
             throw new IllegalArgumentException("El ID no puede ser nulo o vacío. Coloque un ID válido.");
         }
         this.id = id;
@@ -58,10 +60,10 @@ public abstract class Persona {
         this.edad = edad;
     }
 
-    //Método abstracto para obtener el rol de la persona
+    // Método abstracto para obtener el rol de la persona
     public abstract String getRol();
 
-    //toString()
+    // toString()
     @Override
     public String toString() {
         return "Persona [ id: " + id
@@ -69,6 +71,26 @@ public abstract class Persona {
                 + ", edad: " + edad + "]";
     }
 
-    //Método toCSV()
+    // Método toCSV()
     public abstract String toCSV();
+
+    public static Persona fromCSV(String linea) throws CSVInvalidoException {
+        if (linea == null || linea.isBlank())
+            throw new CSVInvalidoException("Línea vacía");
+
+        String prefijo = linea.split(",")[0].toUpperCase();
+
+        switch (prefijo) {
+            case "DETECTIVE":
+                return Detective.fromCSV(linea);
+            case "TESTIGO":
+                return Testigo.fromCSV(linea);
+            case "VICTIMA":
+                return Victima.fromCSV(linea);
+            case "SOSPECHOSO":
+                return Sospechoso.fromCSV(linea);
+            default:
+                throw new CSVInvalidoException("Tipo desconocido: " + prefijo);
+        }
+    }
 }
