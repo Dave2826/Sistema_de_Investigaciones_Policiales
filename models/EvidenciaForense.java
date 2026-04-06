@@ -48,7 +48,8 @@ public class EvidenciaForense extends Evidencia {
 
     @Override
     public String toCSV() {
-        return getIdEvidencia() + "," +
+        return "FORENSE," +
+               getIdEvidencia() + "," +
                getDescripcion() + "," +
                getFechaRecoleccion() + "," +
                getLugarRecoleccion() + "," +
@@ -65,19 +66,19 @@ public class EvidenciaForense extends Evidencia {
 
         String[] partes = linea.split(",");
 
-        if (partes.length != 8) {
+        if (partes.length != 9) {
             throw new IllegalArgumentException("Formato CSV inválido para EvidenciaForense.");
         }
 
         try {
-            String id = partes[0];
-            String descripcion = partes[1];
-            String fecha = partes[2];
-            String lugar = partes[3];
-            String estado = partes[4];
-            String tipoAnalisis = partes[5];
-            String laboratorio = partes[6];
-            String resultado = partes[7];
+            String id = partes[1];
+            String descripcion = partes[2];
+            String fecha = partes[3];
+            String lugar = partes[4];
+            String estado = partes[5];
+            String tipoAnalisis = partes[6];
+            String laboratorio = partes[7];
+            String resultado = partes[8];
 
             return new EvidenciaForense(id, descripcion, fecha, lugar, estado, tipoAnalisis, laboratorio, resultado);
 

@@ -49,11 +49,34 @@ public class Reporte implements Documentable {
     }
 
     public String toCSV() {
-        return id + "," + titulo + "," + contenido;
+        return String.join(";",
+            escaparCSV(id),
+            escaparCSV(titulo),
+            escaparCSV(contenido));
     }
 
-    public static Reporte fromCSV(String csv) {
-        String[] partes = csv.split(",");
-        return new Reporte(partes[0], partes[1], partes[2]);
+    public static Reporte fromCSV(String linea) {
+        if (linea == null || linea.isBlank())
+            throw new IllegalArgumentException("Línea CSV vacía o nula.");
+        String[] partes = linea.split(";", -1);
+        if (partes.length < 3)
+            throw new IllegalArgumentException("Formato CSV inválido para Reporte.");
+        return new Reporte(
+            desescaparCSV(partes[0]),
+            desescaparCSV(partes[1]),
+            desescaparCSV(partes[2]));
+    }
+
+    private static String escaparCSV(String valor) {
+        if (valor == null) return "\"\"";
+        return "\"" + valor.replace("\"", "\"\"") + "\"";
+    }
+
+    private static String desescaparCSV(String valor) {
+        if (valor == null) return "";
+        String v = valor.trim();
+        if (v.startsWith("\"") && v.endsWith("\""))
+            v = v.substring(1, v.length() - 1);
+        return v.replace("\"\"", "\"");
     }
 }

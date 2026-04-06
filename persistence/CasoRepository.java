@@ -6,47 +6,50 @@ import java.util.List;
 
 import exceptions.CSVInvalidoException;
 import models.Caso;
+import models.Entrevista;
+import models.Evidencia;
 import models.Persona;
+import models.Reporte;
 
 public class CasoRepository {
 
     private static final String ARCHIVO_PERSONAS = "personas.csv";
     private static final String ARCHIVO_CASOS = "casos.csv";
+    private static final String ARCHIVO_EVIDENCIAS = "evidencias.csv";
+    private static final String ARCHIVO_ENTREVISTAS = "entrevistas.csv";
+    private static final String ARCHIVO_REPORTES = "reportes.csv";
 
-    // PERSONAS
-    public void guardarPersonas(List<Persona> personas) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(ARCHIVO_PERSONAS))) {
-            for (Persona p : personas) {
-                writer.write(p.toCSV());
-                writer.newLine();
-            }
-        } catch (IOException e) {
-            System.out.println("Error al guardar personas: " + e.getMessage());
+    // ===================== PERSONAS =====================
+
+    public void guardarPersonas(String idCaso, List<Persona> personas) {
+        List<String> lineas = cargarTodasLasLineas(ARCHIVO_PERSONAS);
+        // Eliminar líneas de este caso
+        lineas.removeIf(l -> l.startsWith(idCaso + ";"));
+        // Agregar nuevas líneas con prefijo del caso
+        for (Persona p : personas) {
+            lineas.add(idCaso + ";" + p.toCSV());
         }
+        escribirLineas(ARCHIVO_PERSONAS, lineas);
     }
 
-    public List<Persona> cargarPersonas() {
+    public List<Persona> cargarPersonas(String idCaso) {
         List<Persona> lista = new ArrayList<>();
-        File archivo = new File(ARCHIVO_PERSONAS);
-        if (!archivo.exists())
-            return lista;
-
-        try (BufferedReader reader = new BufferedReader(new FileReader(ARCHIVO_PERSONAS))) {
-            String linea;
-            while ((linea = reader.readLine()) != null) {
+        List<String> lineas = cargarTodasLasLineas(ARCHIVO_PERSONAS);
+        for (String linea : lineas) {
+            if (linea.startsWith(idCaso + ";")) {
+                String datosPersona = linea.substring(idCaso.length() + 1);
                 try {
-                    lista.add(Persona.fromCSV(linea));
+                    lista.add(Persona.fromCSV(datosPersona));
                 } catch (CSVInvalidoException e) {
                     System.out.println("Línea inválida ignorada: " + linea);
                 }
             }
-        } catch (IOException e) {
-            System.out.println("Error al leer personas: " + e.getMessage());
         }
         return lista;
     }
 
-    // CASOS
+    // ===================== CASOS =====================
+
     public void guardarCasos(List<Caso> casos) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(ARCHIVO_CASOS))) {
             for (Caso c : casos) {
@@ -69,7 +72,7 @@ public class CasoRepository {
             while ((linea = reader.readLine()) != null) {
                 try {
                     lista.add(Caso.fromCSV(linea));
-                } catch (Exception e) {
+                } catch (IllegalArgumentException e) {
                     System.out.println("Línea inválida ignorada: " + linea);
                 }
             }
@@ -77,5 +80,113 @@ public class CasoRepository {
             System.out.println("Error al leer casos: " + e.getMessage());
         }
         return lista;
+    }
+
+    // ===================== EVIDENCIAS =====================
+
+    public void guardarEvidencias(String idCaso, List<Evidencia> evidencias) {
+        List<String> lineas = cargarTodasLasLineas(ARCHIVO_EVIDENCIAS);
+        lineas.removeIf(l -> l.startsWith(idCaso + ";"));
+        for (Evidencia e : evidencias) {
+            lineas.add(idCaso + ";" + e.toCSV());
+        }
+        escribirLineas(ARCHIVO_EVIDENCIAS, lineas);
+    }
+
+    public List<Evidencia> cargarEvidencias(String idCaso) {
+        List<Evidencia> lista = new ArrayList<>();
+        List<String> lineas = cargarTodasLasLineas(ARCHIVO_EVIDENCIAS);
+        for (String linea : lineas) {
+            if (linea.startsWith(idCaso + ";")) {
+                String datosEvidencia = linea.substring(idCaso.length() + 1);
+                try {
+                    lista.add(Evidencia.fromCSV(datosEvidencia));
+                } catch (Exception e) {
+                    System.out.println("Evidencia inválida ignorada: " + linea);
+                }
+            }
+        }
+        return lista;
+    }
+
+    // ===================== ENTREVISTAS =====================
+
+    public void guardarEntrevistas(String idCaso, List<Entrevista> entrevistas) {
+        List<String> lineas = cargarTodasLasLineas(ARCHIVO_ENTREVISTAS);
+        lineas.removeIf(l -> l.startsWith(idCaso + "|"));
+        for (Entrevista ent : entrevistas) {
+            lineas.add(idCaso + "|" + ent.toCSV());
+        }
+        escribirLineas(ARCHIVO_ENTREVISTAS, lineas);
+    }
+
+    public List<String[]> cargarEntrevistasCrudas(String idCaso) {
+        List<String[]> lista = new ArrayList<>();
+        List<String> lineas = cargarTodasLasLineas(ARCHIVO_ENTREVISTAS);
+        for (String linea : lineas) {
+            if (linea.startsWith(idCaso + "|")) {
+                String datosEntrevista = linea.substring(idCaso.length() + 1);
+                String[] partes = datosEntrevista.split(";", -1);
+                lista.add(partes);
+            }
+        }
+        return lista;
+    }
+
+    // ===================== REPORTES =====================
+
+    public void guardarReportes(String idCaso, List<Reporte> reportes) {
+        List<String> lineas = cargarTodasLasLineas(ARCHIVO_REPORTES);
+        lineas.removeIf(l -> l.startsWith(idCaso + "|"));
+        for (Reporte r : reportes) {
+            lineas.add(idCaso + "|" + r.toCSV());
+        }
+        escribirLineas(ARCHIVO_REPORTES, lineas);
+    }
+
+    public List<Reporte> cargarReportes(String idCaso) {
+        List<Reporte> lista = new ArrayList<>();
+        List<String> lineas = cargarTodasLasLineas(ARCHIVO_REPORTES);
+        for (String linea : lineas) {
+            if (linea.startsWith(idCaso + "|")) {
+                String datosReporte = linea.substring(idCaso.length() + 1);
+                try {
+                    lista.add(Reporte.fromCSV(datosReporte));
+                } catch (Exception e) {
+                    System.out.println("Reporte inválido ignorado: " + linea);
+                }
+            }
+        }
+        return lista;
+    }
+
+    // ===================== UTILIDADES =====================
+
+    private List<String> cargarTodasLasLineas(String archivo) {
+        List<String> lineas = new ArrayList<>();
+        File f = new File(archivo);
+        if (!f.exists())
+            return lineas;
+        try (BufferedReader reader = new BufferedReader(new FileReader(f))) {
+            String linea;
+            while ((linea = reader.readLine()) != null) {
+                if (!linea.isBlank())
+                    lineas.add(linea);
+            }
+        } catch (IOException e) {
+            System.out.println("Error al leer " + archivo + ": " + e.getMessage());
+        }
+        return lineas;
+    }
+
+    private void escribirLineas(String archivo, List<String> lineas) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(archivo))) {
+            for (String linea : lineas) {
+                writer.write(linea);
+                writer.newLine();
+            }
+        } catch (IOException e) {
+            System.out.println("Error al escribir " + archivo + ": " + e.getMessage());
+        }
     }
 }

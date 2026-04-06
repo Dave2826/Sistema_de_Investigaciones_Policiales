@@ -43,7 +43,8 @@ public class EvidenciaDigital extends Evidencia {
 
     @Override
     public String toCSV() {
-        return getIdEvidencia() + "," +
+        return "DIGITAL," +
+               getIdEvidencia() + "," +
                getDescripcion() + "," +
                getFechaRecoleccion() + "," +
                getLugarRecoleccion() + "," +
@@ -60,19 +61,19 @@ public class EvidenciaDigital extends Evidencia {
 
         String[] partes = linea.split(",");
 
-        if (partes.length != 8) {
+        if (partes.length != 9) {
             throw new IllegalArgumentException("Formato CSV inválido para EvidenciaDigital.");
         }
 
         try {
-            String id = partes[0];
-            String descripcion = partes[1];
-            String fecha = partes[2];
-            String lugar = partes[3];
-            String estado = partes[4];
-            String formato = partes[5];
-            String hash = partes[6];
-            double tamano = Double.parseDouble(partes[7]);
+            String id = partes[1];
+            String descripcion = partes[2];
+            String fecha = partes[3];
+            String lugar = partes[4];
+            String estado = partes[5];
+            String formato = partes[6];
+            String hash = partes[7];
+            double tamano = Double.parseDouble(partes[8]);
 
             return new EvidenciaDigital(id, descripcion, fecha, lugar, estado, formato, hash, tamano);
 

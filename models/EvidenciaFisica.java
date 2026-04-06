@@ -49,7 +49,8 @@ public class EvidenciaFisica extends Evidencia {
 
     @Override
     public String toCSV() {
-        return getIdEvidencia() + "," +
+        return "FISICA," +
+               getIdEvidencia() + "," +
                getDescripcion() + "," +
                getFechaRecoleccion() + "," +
                getLugarRecoleccion() + "," +
@@ -67,20 +68,20 @@ public class EvidenciaFisica extends Evidencia {
 
         String[] partes = linea.split(",");
 
-        if (partes.length != 9) {
+        if (partes.length != 10) {
             throw new IllegalArgumentException("Formato CSV inválido para EvidenciaFisica.");
         }
 
         try {
-            String id = partes[0];
-            String descripcion = partes[1];
-            String fecha = partes[2];
-            String lugar = partes[3];
-            String estado = partes[4];
-            String objeto = partes[5];
-            double peso = Double.parseDouble(partes[6]);
-            String dimensiones = partes[7];
-            String ubicacion = partes[8];
+            String id = partes[1];
+            String descripcion = partes[2];
+            String fecha = partes[3];
+            String lugar = partes[4];
+            String estado = partes[5];
+            String objeto = partes[6];
+            double peso = Double.parseDouble(partes[7]);
+            String dimensiones = partes[8];
+            String ubicacion = partes[9];
 
             return new EvidenciaFisica(id, descripcion, fecha, lugar, estado, objeto, peso, dimensiones, ubicacion);
 

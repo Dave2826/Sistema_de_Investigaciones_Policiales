@@ -92,6 +92,24 @@ public abstract class Evidencia implements Documentable {
                estado;
     }
 
+    public static Evidencia fromCSV(String linea) {
+        if (linea == null || linea.isBlank())
+            throw new IllegalArgumentException("Línea CSV vacía o nula.");
+
+        String prefijo = linea.split(",")[0].toUpperCase();
+
+        switch (prefijo) {
+            case "FISICA":
+                return EvidenciaFisica.fromCSV(linea);
+            case "DIGITAL":
+                return EvidenciaDigital.fromCSV(linea);
+            case "FORENSE":
+                return EvidenciaForense.fromCSV(linea);
+            default:
+                throw new IllegalArgumentException("Tipo de evidencia desconocido: " + prefijo);
+        }
+    }
+
     @Override
     public String toString() {
         return "ID: " + idEvidencia +
