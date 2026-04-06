@@ -1,3 +1,5 @@
+package main;
+
 import exceptions.CasoCerradoException;
 import exceptions.ElementoDuplicadoException;
 import models.Caso;
