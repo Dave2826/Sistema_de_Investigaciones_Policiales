@@ -26,21 +26,10 @@ public class EvidenciaFisica extends Evidencia {
         this.ubicacionAlmacen = ubicacionAlmacen;
     }
 
-    public String getObjeto() {
-        return objeto;
-    }
-
-    public double getPeso() {
-        return peso;
-    }
-
-    public String getDimensiones() {
-        return dimensiones;
-    }
-
-    public String getUbicacionAlmacen() {
-        return ubicacionAlmacen;
-    }
+    public String getObjeto() { return objeto; }
+    public double getPeso() { return peso; }
+    public String getDimensiones() { return dimensiones; }
+    public String getUbicacionAlmacen() { return ubicacionAlmacen; }
 
     @Override
     public String documentar() {
@@ -66,7 +55,7 @@ public class EvidenciaFisica extends Evidencia {
             throw new IllegalArgumentException("Línea CSV vacía o nula.");
         }
 
-        String[] partes = linea.split(",");
+        String[] partes = linea.split(",", -1);
 
         if (partes.length != 10) {
             throw new IllegalArgumentException("Formato CSV inválido para EvidenciaFisica.");
@@ -86,7 +75,7 @@ public class EvidenciaFisica extends Evidencia {
             return new EvidenciaFisica(id, descripcion, fecha, lugar, estado, objeto, peso, dimensiones, ubicacion);
 
         } catch (NumberFormatException e) {
-            throw new IllegalArgumentException("Error al convertir el peso.");
+            throw new IllegalArgumentException("Error al convertir el peso en EvidenciaFisica.");
         }
     }
 

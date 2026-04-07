@@ -21,7 +21,6 @@ public class Reporte implements Documentable {
         this.id = id;
         this.titulo = titulo;
         this.contenido = contenido;
-
     }
 
     @Override
@@ -42,7 +41,6 @@ public class Reporte implements Documentable {
         return "Reporte{id='" + id + "', titulo='" + titulo + "', contenido='" + contenido + "'}";
     }
 
-    // Nuevo
     @Override
     public String documentar() {
         return "Reporte [" + id + "] - " + titulo + "\n" + contenido;
@@ -58,13 +56,21 @@ public class Reporte implements Documentable {
     public static Reporte fromCSV(String linea) {
         if (linea == null || linea.isBlank())
             throw new IllegalArgumentException("Línea CSV vacía o nula.");
+
         String[] partes = linea.split(";", -1);
+
         if (partes.length < 3)
             throw new IllegalArgumentException("Formato CSV inválido para Reporte.");
-        return new Reporte(
-            desescaparCSV(partes[0]),
-            desescaparCSV(partes[1]),
-            desescaparCSV(partes[2]));
+
+        try {
+            return new Reporte(
+                desescaparCSV(partes[0]),
+                desescaparCSV(partes[1]),
+                desescaparCSV(partes[2])
+            );
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("Error al procesar Reporte desde CSV.");
+        }
     }
 
     private static String escaparCSV(String valor) {

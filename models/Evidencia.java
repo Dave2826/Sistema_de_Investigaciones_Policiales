@@ -28,28 +28,13 @@ public abstract class Evidencia implements Documentable {
         this.fechaRecoleccion = fechaRecoleccion;
         this.lugarRecoleccion = lugarRecoleccion;
         this.estado = estado;
-
     }
 
-    public String getIdEvidencia() {
-        return idEvidencia;
-    }
-
-    public String getDescripcion() {
-        return descripcion;
-    }
-
-    public String getFechaRecoleccion() {
-        return fechaRecoleccion;
-    }
-
-    public String getLugarRecoleccion() {
-        return lugarRecoleccion;
-    }
-
-    public String getEstado() {
-        return estado;
-    }
+    public String getIdEvidencia() { return idEvidencia; }
+    public String getDescripcion() { return descripcion; }
+    public String getFechaRecoleccion() { return fechaRecoleccion; }
+    public String getLugarRecoleccion() { return lugarRecoleccion; }
+    public String getEstado() { return estado; }
 
     public void setDescripcion(String descripcion) {
         if (descripcion == null || descripcion.isBlank())
@@ -84,13 +69,7 @@ public abstract class Evidencia implements Documentable {
         System.out.println(toString());
     }
 
-    public String toCSV() {
-        return idEvidencia + "," +
-               descripcion + "," +
-               fechaRecoleccion + "," +
-               lugarRecoleccion + "," +
-               estado;
-    }
+    public abstract String toCSV();
 
     public static Evidencia fromCSV(String linea) {
         if (linea == null || linea.isBlank())

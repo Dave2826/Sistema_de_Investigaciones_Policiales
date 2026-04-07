@@ -21,17 +21,9 @@ public class EvidenciaDigital extends Evidencia {
         this.tamanoArchivo = tamanoArchivo;
     }
 
-    public String getFormato() {
-        return formato;
-    }
-
-    public String getHashMD5() {
-        return hashMD5;
-    }
-
-    public double getTamanoArchivo() {
-        return tamanoArchivo;
-    }
+    public String getFormato() { return formato; }
+    public String getHashMD5() { return hashMD5; }
+    public double getTamanoArchivo() { return tamanoArchivo; }
 
     @Override
     public String documentar() {
@@ -59,7 +51,7 @@ public class EvidenciaDigital extends Evidencia {
             throw new IllegalArgumentException("Línea CSV vacía o nula.");
         }
 
-        String[] partes = linea.split(",");
+        String[] partes = linea.split(",", -1);
 
         if (partes.length != 9) {
             throw new IllegalArgumentException("Formato CSV inválido para EvidenciaDigital.");
@@ -78,7 +70,7 @@ public class EvidenciaDigital extends Evidencia {
             return new EvidenciaDigital(id, descripcion, fecha, lugar, estado, formato, hash, tamano);
 
         } catch (NumberFormatException e) {
-            throw new IllegalArgumentException("Error al convertir el tamaño del archivo.");
+            throw new IllegalArgumentException("Error al convertir el tamaño del archivo en EvidenciaDigital.");
         }
     }
 
