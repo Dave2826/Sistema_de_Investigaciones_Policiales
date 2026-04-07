@@ -3,7 +3,7 @@
 ## Información académica
 
 - Asignatura: Programación Orientada a Objetos  
-- Institución: Tecnológico de software
+- Institución: Tecnológico de Software  
 - Cuatrimestre: Segundo  
 - Tipo de proyecto: Proyecto final  
 
@@ -69,7 +69,7 @@ El sistema maneja distintos tipos de personas dentro de una investigación:
 - Testigo: aporta información  
 - Víctima: afectado por el caso  
 
-Estas entidades comparten una estructura común, pero conservan atributos específicos según su rol.
+Estas entidades comparten una estructura común mediante herencia, manteniendo atributos específicos según su rol.
 
 ---
 
@@ -81,7 +81,7 @@ Las evidencias representan elementos clave dentro de una investigación y se cla
 - Evidencia digital  
 - Evidencia forense  
 
-Cada tipo de evidencia contiene información especializada, pero mantiene una base común.
+Cada tipo contiene información especializada, manteniendo una base común y permitiendo comportamiento polimórfico.
 
 ---
 
@@ -124,10 +124,12 @@ Los reportes permiten documentar y resumir la información de un caso de manera 
 
 El sistema está dividido en capas para mejorar su organización:
 
-- Modelo (models): representación de entidades  
-- Servicio (service): lógica de negocio  
-- Persistencia (persistence): almacenamiento de datos  
-- Excepciones (exceptions): manejo de errores  
+- **Modelo (models):** representación de entidades  
+- **Servicio (service):** lógica de negocio  
+- **Persistencia (persistence):** almacenamiento de datos  
+- **Excepciones (exceptions):** manejo de errores  
+
+Esta separación permite alta cohesión y bajo acoplamiento.
 
 ---
 
@@ -137,7 +139,7 @@ El sistema está dividido en capas para mejorar su organización:
   - Detective  
   - Sospechoso  
   - Testigo  
-  - Victima  
+  - Víctima  
 
 - Evidencia (clase abstracta)
   - EvidenciaFisica  
@@ -153,26 +155,63 @@ El sistema está dividido en capas para mejorar su organización:
 
 ### Persistencia de datos
 
-El sistema utiliza archivos CSV para almacenar la información.
+El sistema implementa persistencia utilizando archivos CSV independientes por tipo de entidad:
 
-- toCSV(): convierte objetos a texto  
-- fromCSV(): reconstruye objetos desde texto  
+- personas.csv  
+- casos.csv  
+- evidencias.csv  
+- entrevistas.csv  
+- reportes.csv  
 
-Este mecanismo permite guardar y recuperar datos de forma consistente.
+Cada clase implementa:
+
+- `toCSV()`: convierte el objeto a texto  
+- `fromCSV(String linea)`: reconstruye el objeto  
+
+Se implementa deserialización polimórfica en entidades como `Persona` y `Evidencia`.
+
+Además, el sistema incluye:
+
+- Validación de datos al deserializar  
+- Manejo de datos corruptos  
+- Uso de `try-with-resources`  
+- Verificación de existencia de archivos  
+- Reconstrucción completa del sistema al iniciar  
+
+---
+
+### Manejo de excepciones
+
+El sistema utiliza excepciones personalizadas:
+
+- `CasoCerradoException`  
+- `ElementoDuplicadoException`  
+- `CSVInvalidoException`  
+
+Se evita el uso de `catch(Exception)` genérico, manejando errores de forma controlada.
+
+---
+
+### Flujo del sistema
+
+1. Carga de datos desde archivos CSV  
+2. Reconstrucción de objetos  
+3. Ejecución de operaciones  
+4. Persistencia automática después de cada cambio  
 
 ---
 
 ### Conceptos de Programación Orientada a Objetos aplicados
 
-- Encapsulamiento: protección de atributos mediante modificadores de acceso  
-- Herencia: reutilización de código en clases derivadas  
-- Polimorfismo: manejo de objetos a través de referencias generales  
-- Clases abstractas: definición de estructuras base  
-- Interfaces: definición de comportamientos comunes  
-- Manejo de excepciones: control de errores mediante clases personalizadas  
-- Uso de colecciones: almacenamiento dinámico con List  
-- Iteradores: eliminación segura de elementos  
-- Separación por capas: organización del sistema  
+- Encapsulamiento  
+- Herencia  
+- Polimorfismo  
+- Clases abstractas  
+- Interfaces  
+- Manejo de excepciones  
+- Uso de colecciones (`List`)  
+- Iteradores (`Iterator`)  
+- Separación por capas  
 
 ---
 
@@ -187,12 +226,12 @@ SIP/
 ├── Main.java
 └── README.md
 
-
-
 ---
 
 ## Conclusión
 
-SIP permite gestionar investigaciones de forma ordenada, evitando problemas como la duplicación de información o la falta de control sobre los datos.
+SIP implementa un sistema completo de gestión de investigaciones policiales, integrando persistencia de datos, validación robusta y una arquitectura en capas bien definida.
 
-El sistema demuestra una implementación sólida de los principios de Programación Orientada a Objetos y establece una base adecuada para futuras mejoras y expansión.
+El proyecto demuestra la aplicación práctica de los principios de Programación Orientada a Objetos, permitiendo la manipulación estructurada de información compleja y garantizando consistencia, integridad y escalabilidad.
+
+El sistema queda preparado para futuras mejoras, como interfaces gráficas o integración con bases de datos.
