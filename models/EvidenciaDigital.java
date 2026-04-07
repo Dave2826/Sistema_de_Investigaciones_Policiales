@@ -1,5 +1,7 @@
 package models;
 
+import exceptions.CSVInvalidoException;
+
 public class EvidenciaDigital extends Evidencia {
 
     private String formato;
@@ -46,16 +48,14 @@ public class EvidenciaDigital extends Evidencia {
                tamanoArchivo;
     }
 
-    public static EvidenciaDigital fromCSV(String linea) {
-        if (linea == null || linea.isBlank()) {
-            throw new IllegalArgumentException("Línea CSV vacía o nula.");
-        }
+    public static EvidenciaDigital fromCSV(String linea) throws CSVInvalidoException {
+        if (linea == null || linea.isBlank())
+            throw new CSVInvalidoException("Línea CSV vacía o nula.");
 
-        String[] partes = linea.split(",", -1);
+        String[] partes = linea.split(",");
 
-        if (partes.length != 9) {
-            throw new IllegalArgumentException("Formato CSV inválido para EvidenciaDigital.");
-        }
+        if (partes.length != 9)
+            throw new CSVInvalidoException("Formato CSV inválido para EvidenciaDigital.");
 
         try {
             String id = partes[1];
@@ -70,7 +70,7 @@ public class EvidenciaDigital extends Evidencia {
             return new EvidenciaDigital(id, descripcion, fecha, lugar, estado, formato, hash, tamano);
 
         } catch (NumberFormatException e) {
-            throw new IllegalArgumentException("Error al convertir el tamaño del archivo en EvidenciaDigital.");
+            throw new CSVInvalidoException("Error al convertir el tamaño del archivo.");
         }
     }
 
