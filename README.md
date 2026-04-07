@@ -27,7 +27,7 @@ SIP resuelve estos problemas mediante:
 - Organización estructurada de los datos  
 - Control de duplicidad de registros  
 - Validación de información desde su creación  
-- Acceso rápido y ordenado a los datos  
+- Acceso rápido y ordenado a los datos.  
 
 ---
 
@@ -39,7 +39,7 @@ El sistema tiene como finalidad proporcionar una herramienta que permita:
 - Asociar correctamente personas a cada caso  
 - Gestionar evidencias con control estructurado  
 - Documentar entrevistas realizadas durante el proceso  
-- Generar reportes claros para análisis y seguimiento  
+- Generar reportes claros para análisis y seguimiento.  
 
 ---
 
