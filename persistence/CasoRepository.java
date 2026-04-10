@@ -105,7 +105,7 @@ public class CasoRepository {
                 String datosEvidencia = linea.substring(idCaso.length() + 1);
                 try {
                     lista.add(Evidencia.fromCSV(datosEvidencia));
-                } catch (IllegalArgumentException e) {
+                } catch (CSVInvalidoException e) {
                     System.out.println("Evidencia inválida ignorada: " + linea);
                 }
             }
