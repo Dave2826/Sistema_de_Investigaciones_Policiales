@@ -1,6 +1,7 @@
 package models;
 
 import interfaces.Documentable;
+import exceptions.CSVInvalidoException;
 
 public class Entrevista implements Documentable {
 
@@ -56,12 +57,13 @@ public class Entrevista implements Documentable {
                 escaparCSV(entrevistado.getId()));
     }
 
-    public static Entrevista fromCSV(String linea, Detective detective, Persona entrevistado) {
+    public static Entrevista fromCSV(String linea, Detective detective, Persona entrevistado)
+            throws CSVInvalidoException {
         if (linea == null || linea.isBlank())
-            throw new IllegalArgumentException("La línea CSV no puede ser nula o vacía.");
+            throw new CSVInvalidoException("La línea CSV no puede ser nula o vacía.");
         String[] partes = linea.split(";", -1);
         if (partes.length < 5)
-            throw new IllegalArgumentException(
+            throw new CSVInvalidoException(
                     "Formato CSV inválido: se esperaban 5 columnas, se encontraron " + partes.length + ".");
         return new Entrevista(
                 desescaparCSV(partes[0]),

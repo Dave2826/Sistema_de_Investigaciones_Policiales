@@ -72,7 +72,7 @@ public class CasoRepository {
             while ((linea = reader.readLine()) != null) {
                 try {
                     lista.add(Caso.fromCSV(linea));
-                } catch (IllegalArgumentException e) {
+                } catch (CSVInvalidoException e) {
                     System.out.println("Línea inválida ignorada: " + linea);
                 }
             }
@@ -166,7 +166,7 @@ public class CasoRepository {
                 String datosReporte = linea.substring(idCaso.length() + 1);
                 try {
                     lista.add(Reporte.fromCSV(datosReporte));
-                } catch (IllegalArgumentException e) {
+                } catch (CSVInvalidoException e) {
                     System.out.println("Reporte inválido ignorado: " + linea);
                 }
             }

@@ -3,6 +3,7 @@ package models;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import exceptions.CSVInvalidoException;
 
 public class Caso {
 
@@ -140,13 +141,13 @@ public class Caso {
                 String.valueOf(reportes.size()));
     }
 
-    public static Caso fromCSV(String linea) {
+    public static Caso fromCSV(String linea) throws CSVInvalidoException {
         if (linea == null || linea.isBlank())
-            throw new IllegalArgumentException("La línea CSV no puede ser nula o vacía.");
+            throw new CSVInvalidoException("La línea CSV no puede ser nula o vacía.");
 
         String[] partes = linea.split(";", -1);
         if (partes.length < 3)
-            throw new IllegalArgumentException(
+            throw new CSVInvalidoException(
                     "Formato CSV inválido: se esperaban al menos 3 columnas, se encontraron " + partes.length + ".");
 
         String idCaso = desescaparCSV(partes[0]);

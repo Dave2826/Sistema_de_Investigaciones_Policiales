@@ -1,5 +1,6 @@
 package models;
 
+import exceptions.CSVInvalidoException;
 import interfaces.Documentable;
 
 public class Reporte implements Documentable {
@@ -53,14 +54,14 @@ public class Reporte implements Documentable {
                 escaparCSV(contenido));
     }
 
-    public static Reporte fromCSV(String linea) {
+    public static Reporte fromCSV(String linea) throws CSVInvalidoException {
         if (linea == null || linea.isBlank())
-            throw new IllegalArgumentException("Línea CSV vacía o nula.");
+            throw new CSVInvalidoException("Línea CSV vacía o nula.");
 
         String[] partes = linea.split(";", -1);
 
         if (partes.length < 3)
-            throw new IllegalArgumentException("Formato CSV inválido para Reporte.");
+            throw new CSVInvalidoException("Formato CSV inválido para Reporte.");
 
         try {
             return new Reporte(
@@ -68,7 +69,7 @@ public class Reporte implements Documentable {
                     desescaparCSV(partes[1]),
                     desescaparCSV(partes[2]));
         } catch (IllegalArgumentException e) {
-            throw new IllegalArgumentException("Error al procesar Reporte desde CSV.");
+            throw new CSVInvalidoException("Error al procesar Reporte desde CSV.");
         }
     }
 

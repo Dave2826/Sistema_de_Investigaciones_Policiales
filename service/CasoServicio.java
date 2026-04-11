@@ -3,7 +3,7 @@ package service;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
+import exceptions.CSVInvalidoException;
 import exceptions.CasoCerradoException;
 import exceptions.ElementoDuplicadoException;
 import models.Caso;
@@ -74,7 +74,7 @@ public class CasoServicio {
                         caso.agregarEntrevista(ent);
                     }
 
-                } catch (IllegalArgumentException e) {
+                } catch (CSVInvalidoException e) {
                     System.out.println("Error al cargar entrevista: " + e.getMessage());
                 }
             }
