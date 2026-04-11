@@ -1,6 +1,7 @@
 package models;
 
 import interfaces.Documentable;
+import exceptions.CSVInvalidoException;
 
 public abstract class Evidencia implements Documentable {
 
@@ -28,7 +29,6 @@ public abstract class Evidencia implements Documentable {
         this.fechaRecoleccion = fechaRecoleccion;
         this.lugarRecoleccion = lugarRecoleccion;
         this.estado = estado;
-
     }
 
     public String getIdEvidencia() {
@@ -86,15 +86,15 @@ public abstract class Evidencia implements Documentable {
 
     public String toCSV() {
         return idEvidencia + "," +
-               descripcion + "," +
-               fechaRecoleccion + "," +
-               lugarRecoleccion + "," +
-               estado;
+                descripcion + "," +
+                fechaRecoleccion + "," +
+                lugarRecoleccion + "," +
+                estado;
     }
 
-    public static Evidencia fromCSV(String linea) {
+    public static Evidencia fromCSV(String linea) throws CSVInvalidoException {
         if (linea == null || linea.isBlank())
-            throw new IllegalArgumentException("Línea CSV vacía o nula.");
+            throw new CSVInvalidoException("Línea CSV vacía o nula.");
 
         String prefijo = linea.split(",")[0].toUpperCase();
 
@@ -106,7 +106,7 @@ public abstract class Evidencia implements Documentable {
             case "FORENSE":
                 return EvidenciaForense.fromCSV(linea);
             default:
-                throw new IllegalArgumentException("Tipo de evidencia desconocido: " + prefijo);
+                throw new CSVInvalidoException("Tipo de evidencia desconocido: " + prefijo);
         }
     }
 

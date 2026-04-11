@@ -23,9 +23,7 @@ public class CasoRepository {
 
     public void guardarPersonas(String idCaso, List<Persona> personas) {
         List<String> lineas = cargarTodasLasLineas(ARCHIVO_PERSONAS);
-        // Eliminar líneas de este caso
         lineas.removeIf(l -> l.startsWith(idCaso + ";"));
-        // Agregar nuevas líneas con prefijo del caso
         for (Persona p : personas) {
             lineas.add(idCaso + ";" + p.toCSV());
         }
@@ -35,6 +33,7 @@ public class CasoRepository {
     public List<Persona> cargarPersonas(String idCaso) {
         List<Persona> lista = new ArrayList<>();
         List<String> lineas = cargarTodasLasLineas(ARCHIVO_PERSONAS);
+
         for (String linea : lineas) {
             if (linea.startsWith(idCaso + ";")) {
                 String datosPersona = linea.substring(idCaso.length() + 1);
@@ -64,6 +63,7 @@ public class CasoRepository {
     public List<Caso> cargarCasos() {
         List<Caso> lista = new ArrayList<>();
         File archivo = new File(ARCHIVO_CASOS);
+
         if (!archivo.exists())
             return lista;
 
@@ -79,6 +79,7 @@ public class CasoRepository {
         } catch (IOException e) {
             System.out.println("Error al leer casos: " + e.getMessage());
         }
+
         return lista;
     }
 
@@ -87,25 +88,29 @@ public class CasoRepository {
     public void guardarEvidencias(String idCaso, List<Evidencia> evidencias) {
         List<String> lineas = cargarTodasLasLineas(ARCHIVO_EVIDENCIAS);
         lineas.removeIf(l -> l.startsWith(idCaso + ";"));
+
         for (Evidencia e : evidencias) {
             lineas.add(idCaso + ";" + e.toCSV());
         }
+
         escribirLineas(ARCHIVO_EVIDENCIAS, lineas);
     }
 
     public List<Evidencia> cargarEvidencias(String idCaso) {
         List<Evidencia> lista = new ArrayList<>();
         List<String> lineas = cargarTodasLasLineas(ARCHIVO_EVIDENCIAS);
+
         for (String linea : lineas) {
             if (linea.startsWith(idCaso + ";")) {
                 String datosEvidencia = linea.substring(idCaso.length() + 1);
                 try {
                     lista.add(Evidencia.fromCSV(datosEvidencia));
-                } catch (IllegalArgumentException e) {
+                } catch (CSVInvalidoException e) {
                     System.out.println("Evidencia inválida ignorada: " + linea);
                 }
             }
         }
+
         return lista;
     }
 
@@ -114,15 +119,20 @@ public class CasoRepository {
     public void guardarEntrevistas(String idCaso, List<Entrevista> entrevistas) {
         List<String> lineas = cargarTodasLasLineas(ARCHIVO_ENTREVISTAS);
         lineas.removeIf(l -> l.startsWith(idCaso + "|"));
+
+        // Se usa "|" como separador externo para evitar conflicto con ";" usado en CSV
+        // interno
         for (Entrevista ent : entrevistas) {
             lineas.add(idCaso + "|" + ent.toCSV());
         }
+
         escribirLineas(ARCHIVO_ENTREVISTAS, lineas);
     }
 
     public List<String[]> cargarEntrevistasCrudas(String idCaso) {
         List<String[]> lista = new ArrayList<>();
         List<String> lineas = cargarTodasLasLineas(ARCHIVO_ENTREVISTAS);
+
         for (String linea : lineas) {
             if (linea.startsWith(idCaso + "|")) {
                 String datosEntrevista = linea.substring(idCaso.length() + 1);
@@ -130,6 +140,7 @@ public class CasoRepository {
                 lista.add(partes);
             }
         }
+
         return lista;
     }
 
@@ -138,15 +149,18 @@ public class CasoRepository {
     public void guardarReportes(String idCaso, List<Reporte> reportes) {
         List<String> lineas = cargarTodasLasLineas(ARCHIVO_REPORTES);
         lineas.removeIf(l -> l.startsWith(idCaso + "|"));
+
         for (Reporte r : reportes) {
             lineas.add(idCaso + "|" + r.toCSV());
         }
+
         escribirLineas(ARCHIVO_REPORTES, lineas);
     }
 
     public List<Reporte> cargarReportes(String idCaso) {
         List<Reporte> lista = new ArrayList<>();
         List<String> lineas = cargarTodasLasLineas(ARCHIVO_REPORTES);
+
         for (String linea : lineas) {
             if (linea.startsWith(idCaso + "|")) {
                 String datosReporte = linea.substring(idCaso.length() + 1);
@@ -157,6 +171,7 @@ public class CasoRepository {
                 }
             }
         }
+
         return lista;
     }
 
@@ -165,8 +180,10 @@ public class CasoRepository {
     private List<String> cargarTodasLasLineas(String archivo) {
         List<String> lineas = new ArrayList<>();
         File f = new File(archivo);
+
         if (!f.exists())
             return lineas;
+
         try (BufferedReader reader = new BufferedReader(new FileReader(f))) {
             String linea;
             while ((linea = reader.readLine()) != null) {
@@ -176,6 +193,7 @@ public class CasoRepository {
         } catch (IOException e) {
             System.out.println("Error al leer " + archivo + ": " + e.getMessage());
         }
+
         return lineas;
     }
 

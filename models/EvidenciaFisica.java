@@ -1,5 +1,7 @@
 package models;
 
+import exceptions.CSVInvalidoException;
+
 public class EvidenciaFisica extends Evidencia {
 
     private String objeto;
@@ -7,8 +9,8 @@ public class EvidenciaFisica extends Evidencia {
     private String dimensiones;
     private String ubicacionAlmacen;
 
-    public EvidenciaFisica(String idEvidencia, String descripcion, String fechaRecoleccion, String lugarRecoleccion,String estado, String objeto, double peso, String dimensiones, String ubicacionAlmacen) {
-
+    public EvidenciaFisica(String idEvidencia, String descripcion, String fechaRecoleccion, String lugarRecoleccion,
+            String estado, String objeto, double peso, String dimensiones, String ubicacionAlmacen) {
         super(idEvidencia, descripcion, fechaRecoleccion, lugarRecoleccion, estado);
 
         if (objeto == null || objeto.isBlank())
@@ -50,27 +52,25 @@ public class EvidenciaFisica extends Evidencia {
     @Override
     public String toCSV() {
         return "FISICA," +
-               getIdEvidencia() + "," +
-               getDescripcion() + "," +
-               getFechaRecoleccion() + "," +
-               getLugarRecoleccion() + "," +
-               getEstado() + "," +
-               objeto + "," +
-               peso + "," +
-               dimensiones + "," +
-               ubicacionAlmacen;
+                getIdEvidencia() + "," +
+                getDescripcion() + "," +
+                getFechaRecoleccion() + "," +
+                getLugarRecoleccion() + "," +
+                getEstado() + "," +
+                objeto + "," +
+                peso + "," +
+                dimensiones + "," +
+                ubicacionAlmacen;
     }
 
-    public static EvidenciaFisica fromCSV(String linea) {
-        if (linea == null || linea.isBlank()) {
-            throw new IllegalArgumentException("Línea CSV vacía o nula.");
-        }
+    public static EvidenciaFisica fromCSV(String linea) throws CSVInvalidoException {
+        if (linea == null || linea.isBlank())
+            throw new CSVInvalidoException("Línea CSV vacía o nula.");
 
         String[] partes = linea.split(",");
 
-        if (partes.length != 10) {
-            throw new IllegalArgumentException("Formato CSV inválido para EvidenciaFisica.");
-        }
+        if (partes.length != 10)
+            throw new CSVInvalidoException("Formato CSV inválido para EvidenciaFisica.");
 
         try {
             String id = partes[1];
@@ -86,7 +86,7 @@ public class EvidenciaFisica extends Evidencia {
             return new EvidenciaFisica(id, descripcion, fecha, lugar, estado, objeto, peso, dimensiones, ubicacion);
 
         } catch (NumberFormatException e) {
-            throw new IllegalArgumentException("Error al convertir el peso.");
+            throw new CSVInvalidoException("Error al convertir el peso.");
         }
     }
 

@@ -19,36 +19,41 @@ public class CasoServicio {
     private List<Caso> casos = new ArrayList<>();
     private CasoRepository repository = new CasoRepository();
 
-    // CARGAR DATOS (reconstruye casos con personas, evidencias, entrevistas y reportes)
+    // CARGAR DATOS
     public void cargarDatos() {
         casos = repository.cargarCasos();
 
         for (Caso caso : casos) {
             String id = caso.getIdCaso();
 
-            // Cargar personas
+            // PERSONAS
             List<Persona> personas = repository.cargarPersonas(id);
             for (Persona p : personas) {
                 caso.agregarPersona(p);
             }
 
-            // Cargar evidencias
+            // EVIDENCIAS
             List<Evidencia> evidencias = repository.cargarEvidencias(id);
             for (Evidencia e : evidencias) {
                 caso.agregarEvidencia(e);
             }
 
-            // Cargar reportes
+            // REPORTES
             List<Reporte> reportes = repository.cargarReportes(id);
             for (Reporte r : reportes) {
                 caso.agregarReporte(r);
             }
 
-            // Cargar entrevistas (necesitan detective y entrevistado del caso)
+            // ENTREVISTAS
             List<String[]> entrevistasCrudas = repository.cargarEntrevistasCrudas(id);
+
             for (String[] partes : entrevistasCrudas) {
                 try {
-                    if (partes.length < 5) continue;
+                    if (partes.length < 5) {
+                        System.out.println("Entrevista inválida ignorada");
+                        continue;
+                    }
+
                     String idDetective = desescaparCSV(partes[3]);
                     String idEntrevistado = desescaparCSV(partes[4]);
 
@@ -58,6 +63,7 @@ public class CasoServicio {
                     for (Persona p : caso.getPersonas()) {
                         if (p.getId().equals(idDetective) && p instanceof Detective)
                             detective = (Detective) p;
+
                         if (p.getId().equals(idEntrevistado))
                             entrevistado = p;
                     }
@@ -67,14 +73,14 @@ public class CasoServicio {
                         Entrevista ent = Entrevista.fromCSV(lineaCSV, detective, entrevistado);
                         caso.agregarEntrevista(ent);
                     }
-                } catch (Exception e) {
+
+                } catch (IllegalArgumentException e) {
                     System.out.println("Error al cargar entrevista: " + e.getMessage());
                 }
             }
         }
     }
 
-    // AGREGAR CASO
     public void agregarCaso(Caso caso) {
         if (caso == null)
             throw new IllegalArgumentException("El caso no puede ser nulo.");
@@ -82,7 +88,6 @@ public class CasoServicio {
         repository.guardarCasos(casos);
     }
 
-    // BUSCAR CASO
     public Caso buscarCasoPorId(String idCaso) {
         for (Caso c : casos) {
             if (c.getIdCaso().equals(idCaso))
@@ -95,11 +100,11 @@ public class CasoServicio {
         return casos;
     }
 
-    // AGREGAR PERSONA
     public void agregarPersona(String idCaso, Persona persona)
             throws CasoCerradoException, ElementoDuplicadoException {
 
         Caso caso = buscarCasoPorId(idCaso);
+
         if (caso == null)
             throw new IllegalArgumentException("No existe un caso con ID: " + idCaso);
 
@@ -119,11 +124,11 @@ public class CasoServicio {
         repository.guardarPersonas(idCaso, caso.getPersonas());
     }
 
-    // AGREGAR EVIDENCIA
     public void agregarEvidencia(String idCaso, Evidencia evidencia)
             throws CasoCerradoException, ElementoDuplicadoException {
 
         Caso caso = buscarCasoPorId(idCaso);
+
         if (caso == null)
             throw new IllegalArgumentException("No existe un caso con ID: " + idCaso);
 
@@ -143,11 +148,11 @@ public class CasoServicio {
         repository.guardarEvidencias(idCaso, caso.getEvidencias());
     }
 
-    // AGREGAR ENTREVISTA
     public void agregarEntrevista(String idCaso, Entrevista entrevista)
             throws CasoCerradoException {
 
         Caso caso = buscarCasoPorId(idCaso);
+
         if (caso == null)
             throw new IllegalArgumentException("No existe un caso con ID: " + idCaso);
 
@@ -161,11 +166,11 @@ public class CasoServicio {
         repository.guardarEntrevistas(idCaso, caso.getEntrevistas());
     }
 
-    // AGREGAR REPORTE
     public void agregarReporte(String idCaso, Reporte reporte)
             throws CasoCerradoException {
 
         Caso caso = buscarCasoPorId(idCaso);
+
         if (caso == null)
             throw new IllegalArgumentException("No existe un caso con ID: " + idCaso);
 
@@ -179,11 +184,11 @@ public class CasoServicio {
         repository.guardarReportes(idCaso, caso.getReportes());
     }
 
-    // BUSCAR PERSONA
     public Persona buscarPersonaPorId(String idCaso, String id) {
         Caso caso = buscarCasoPorId(idCaso);
         if (caso == null)
             return null;
+
         for (Persona p : caso.getPersonas()) {
             if (p.getId().equals(id))
                 return p;
@@ -191,11 +196,11 @@ public class CasoServicio {
         return null;
     }
 
-    // BUSCAR EVIDENCIA
     public Evidencia buscarEvidenciaPorId(String idCaso, String idEvidencia) {
         Caso caso = buscarCasoPorId(idCaso);
         if (caso == null)
             return null;
+
         for (Evidencia e : caso.getEvidencias()) {
             if (e.getIdEvidencia().equals(idEvidencia))
                 return e;
@@ -203,37 +208,39 @@ public class CasoServicio {
         return null;
     }
 
-    // FILTRAR PERSONAS
     public List<Persona> filtrarPersonasPorRol(String idCaso, String rol) {
         List<Persona> resultado = new ArrayList<>();
         Caso caso = buscarCasoPorId(idCaso);
         if (caso == null)
             return resultado;
+
         for (Persona p : caso.getPersonas()) {
             if (p.getRol().equalsIgnoreCase(rol))
                 resultado.add(p);
         }
+
         return resultado;
     }
 
-    // FILTRAR EVIDENCIAS
     public List<Evidencia> filtrarEvidenciasPorEstado(String idCaso, String estado) {
         List<Evidencia> resultado = new ArrayList<>();
         Caso caso = buscarCasoPorId(idCaso);
         if (caso == null)
             return resultado;
+
         for (Evidencia e : caso.getEvidencias()) {
             if (e.getEstado().equalsIgnoreCase(estado))
                 resultado.add(e);
         }
+
         return resultado;
     }
 
-    // ELIMINAR EVIDENCIA
     public boolean eliminarEvidenciaPorId(String idCaso, String idEvidencia)
             throws CasoCerradoException {
 
         Caso caso = buscarCasoPorId(idCaso);
+
         if (caso == null)
             throw new IllegalArgumentException("No existe un caso con ID: " + idCaso);
 
@@ -241,6 +248,7 @@ public class CasoServicio {
             throw new CasoCerradoException("El caso " + idCaso + " está cerrado.");
 
         Iterator<Evidencia> iterator = caso.getEvidenciasInternas().iterator();
+
         while (iterator.hasNext()) {
             if (iterator.next().getIdEvidencia().equals(idEvidencia)) {
                 iterator.remove();
@@ -248,12 +256,13 @@ public class CasoServicio {
                 return true;
             }
         }
+
         return false;
     }
 
-    // UTILIDAD
     private static String desescaparCSV(String valor) {
-        if (valor == null) return "";
+        if (valor == null)
+            return "";
         String v = valor.trim();
         if (v.startsWith("\"") && v.endsWith("\""))
             v = v.substring(1, v.length() - 1);

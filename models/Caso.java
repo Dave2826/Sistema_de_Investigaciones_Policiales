@@ -10,10 +10,10 @@ public class Caso {
     private String titulo;
     private String estado;
 
-    private List<Persona>    personas;
-    private List<Evidencia>  evidencias;
+    private List<Persona> personas;
+    private List<Evidencia> evidencias;
     private List<Entrevista> entrevistas;
-    private List<Reporte>    reportes;
+    private List<Reporte> reportes;
 
     public Caso(String idCaso, String titulo, String estado) {
         if (idCaso == null || idCaso.isBlank())
@@ -27,21 +27,43 @@ public class Caso {
         this.titulo = titulo;
         this.estado = estado;
 
-        this.personas    = new ArrayList<>();
-        this.evidencias  = new ArrayList<>();
+        this.personas = new ArrayList<>();
+        this.evidencias = new ArrayList<>();
         this.entrevistas = new ArrayList<>();
-        this.reportes    = new ArrayList<>();
+        this.reportes = new ArrayList<>();
     }
 
-    public String getIdCaso() { return idCaso; }
-    public String getTitulo() { return titulo; }
-    public String getEstado() { return estado; }
+    public String getIdCaso() {
+        return idCaso;
+    }
 
-    public List<Persona>    getPersonas()    { return Collections.unmodifiableList(personas); }
-    public List<Evidencia>  getEvidencias()  { return Collections.unmodifiableList(evidencias); }
-    public List<Evidencia> getEvidenciasInternas() { return evidencias; }
-    public List<Entrevista> getEntrevistas() { return Collections.unmodifiableList(entrevistas); }
-    public List<Reporte>    getReportes()    { return Collections.unmodifiableList(reportes); }
+    public String getTitulo() {
+        return titulo;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public List<Persona> getPersonas() {
+        return Collections.unmodifiableList(personas);
+    }
+
+    public List<Evidencia> getEvidencias() {
+        return Collections.unmodifiableList(evidencias);
+    }
+
+    public List<Evidencia> getEvidenciasInternas() {
+        return evidencias;
+    }
+
+    public List<Entrevista> getEntrevistas() {
+        return Collections.unmodifiableList(entrevistas);
+    }
+
+    public List<Reporte> getReportes() {
+        return Collections.unmodifiableList(reportes);
+    }
 
     public void agregarPersona(Persona p) {
         if (p == null)
@@ -97,49 +119,52 @@ public class Caso {
         System.out.println(generarResumen());
         if (!entrevistas.isEmpty()) {
             System.out.println("\n===== DETALLE DE ENTREVISTAS =====");
-            for (Entrevista ent : entrevistas) ent.mostrarDetalles();
+            for (Entrevista ent : entrevistas)
+                ent.mostrarDetalles();
         }
         if (!evidencias.isEmpty()) {
             System.out.println("\n===== DETALLE DE EVIDENCIAS =====");
-            for (Evidencia e : evidencias) e.mostrarDetalles();
+            for (Evidencia e : evidencias)
+                e.mostrarDetalles();
         }
     }
 
     public String toCSV() {
         return String.join(";",
-            escaparCSV(idCaso),
-            escaparCSV(titulo),
-            escaparCSV(estado),
-            String.valueOf(personas.size()),
-            String.valueOf(evidencias.size()),
-            String.valueOf(entrevistas.size()),
-            String.valueOf(reportes.size())
-        );
+                escaparCSV(idCaso),
+                escaparCSV(titulo),
+                escaparCSV(estado),
+                String.valueOf(personas.size()),
+                String.valueOf(evidencias.size()),
+                String.valueOf(entrevistas.size()),
+                String.valueOf(reportes.size()));
     }
 
     public static Caso fromCSV(String linea) {
         if (linea == null || linea.isBlank())
             throw new IllegalArgumentException("La línea CSV no puede ser nula o vacía.");
 
-        String[] partes = linea.split(";", -1);   
+        String[] partes = linea.split(";", -1);
         if (partes.length < 3)
             throw new IllegalArgumentException(
-                "Formato CSV inválido: se esperaban al menos 3 columnas, se encontraron " + partes.length + ".");
+                    "Formato CSV inválido: se esperaban al menos 3 columnas, se encontraron " + partes.length + ".");
 
         String idCaso = desescaparCSV(partes[0]);
         String titulo = desescaparCSV(partes[1]);
         String estado = desescaparCSV(partes[2]);
-    
+
         return new Caso(idCaso, titulo, estado);
     }
 
     private static String escaparCSV(String valor) {
-        if (valor == null) return "\"\"";
+        if (valor == null)
+            return "\"\"";
         return "\"" + valor.replace("\"", "\"\"") + "\"";
     }
 
     private static String desescaparCSV(String valor) {
-        if (valor == null) return "";
+        if (valor == null)
+            return "";
         String v = valor.trim();
         if (v.startsWith("\"") && v.endsWith("\""))
             v = v.substring(1, v.length() - 1);
@@ -147,15 +172,15 @@ public class Caso {
     }
 
     @Override
-public String toString() {
-    return "Caso{"
-        + "idCaso='"       + idCaso             + '\''
-        + ", titulo='"     + titulo             + '\''
-        + ", estado='"     + estado             + '\''
-        + ", personas="    + personas.size()
-        + ", evidencias="  + evidencias.size()
-        + ", entrevistas=" + entrevistas.size()
-        + ", reportes="    + reportes.size()
-        + '}';
+    public String toString() {
+        return "Caso{"
+                + "idCaso='" + idCaso + '\''
+                + ", titulo='" + titulo + '\''
+                + ", estado='" + estado + '\''
+                + ", personas=" + personas.size()
+                + ", evidencias=" + evidencias.size()
+                + ", entrevistas=" + entrevistas.size()
+                + ", reportes=" + reportes.size()
+                + '}';
     }
 }

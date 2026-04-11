@@ -1,5 +1,7 @@
 package models;
+
 import interfaces.Documentable;
+
 public class Entrevista implements Documentable {
 
     private String id;
@@ -25,21 +27,34 @@ public class Entrevista implements Documentable {
         this.entrevistado = entrevistado;
     }
 
-    public String getId() { return id; }
-    public String getFecha() { return fecha; }
-    public String getNotas() { return notas; }
-    public Detective getDetective() { return detective; }
-    public Persona getEntrevistado() { return entrevistado; }
+    public String getId() {
+        return id;
+    }
+
+    public String getFecha() {
+        return fecha;
+    }
+
+    public String getNotas() {
+        return notas;
+    }
+
+    public Detective getDetective() {
+        return detective;
+    }
+
+    public Persona getEntrevistado() {
+        return entrevistado;
+    }
 
     public String toCSV() {
-    return String.join(";",
-        escaparCSV(id),
-        escaparCSV(fecha),
-        escaparCSV(notas != null ? notas : ""),
-        escaparCSV(detective.getId()),
-        escaparCSV(entrevistado.getId())
-    );
-}
+        return String.join(";",
+                escaparCSV(id),
+                escaparCSV(fecha),
+                escaparCSV(notas != null ? notas : ""),
+                escaparCSV(detective.getId()),
+                escaparCSV(entrevistado.getId()));
+    }
 
     public static Entrevista fromCSV(String linea, Detective detective, Persona entrevistado) {
         if (linea == null || linea.isBlank())
@@ -47,23 +62,24 @@ public class Entrevista implements Documentable {
         String[] partes = linea.split(";", -1);
         if (partes.length < 5)
             throw new IllegalArgumentException(
-            "Formato CSV inválido: se esperaban 5 columnas, se encontraron " + partes.length + ".");
+                    "Formato CSV inválido: se esperaban 5 columnas, se encontraron " + partes.length + ".");
         return new Entrevista(
-            desescaparCSV(partes[0]),
-            desescaparCSV(partes[1]),
-            desescaparCSV(partes[2]),
-            detective,
-            entrevistado
-        );
+                desescaparCSV(partes[0]),
+                desescaparCSV(partes[1]),
+                desescaparCSV(partes[2]),
+                detective,
+                entrevistado);
     }
 
     private static String escaparCSV(String valor) {
-        if (valor == null) return "\"\"";
+        if (valor == null)
+            return "\"\"";
         return "\"" + valor.replace("\"", "\"\"") + "\"";
     }
 
     private static String desescaparCSV(String valor) {
-        if (valor == null) return "";
+        if (valor == null)
+            return "";
         String v = valor.trim();
         if (v.startsWith("\"") && v.endsWith("\""))
             v = v.substring(1, v.length() - 1);
@@ -73,8 +89,8 @@ public class Entrevista implements Documentable {
     @Override
     public String generarResumen() {
         return "Entrevista [ID: " + id + "] | Fecha: " + fecha +
-               " | Persona entrevistada: " + entrevistado.getNombre() +
-               " | Detective a cargo: " + detective.getNombre();
+                " | Persona entrevistada: " + entrevistado.getNombre() +
+                " | Detective a cargo: " + detective.getNombre();
     }
 
     @Override
@@ -89,21 +105,21 @@ public class Entrevista implements Documentable {
     }
 
     @Override
-public String documentar() {
-    return "Entrevista [" + id + "] - Fecha: " + fecha +
-           "\nDetective: " + detective.getNombre() +
-           "\nEntrevistado: " + entrevistado.getNombre() +
-           "\nNotas: " + (notas != null ? notas : "Sin notas");
-}
+    public String documentar() {
+        return "Entrevista [" + id + "] - Fecha: " + fecha +
+                "\nDetective: " + detective.getNombre() +
+                "\nEntrevistado: " + entrevistado.getNombre() +
+                "\nNotas: " + (notas != null ? notas : "Sin notas");
+    }
 
     @Override
     public String toString() {
         return "Entrevista{" +
-               "id='" + id + '\'' +
-               ", fecha='" + fecha + '\'' +
-               ", notas='" + notas + '\'' +
-               ", detective=" + detective.getNombre() +
-               ", entrevistado=" + entrevistado.getNombre() +
-               '}';
+                "id='" + id + '\'' +
+                ", fecha='" + fecha + '\'' +
+                ", notas='" + notas + '\'' +
+                ", detective=" + detective.getNombre() +
+                ", entrevistado=" + entrevistado.getNombre() +
+                '}';
     }
 }
