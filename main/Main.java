@@ -24,47 +24,53 @@ public class Main {
         servicio.cargarDatos();
 
         try {
-            // --- CASO ---
-            Caso caso = new Caso("C001", "Homicidio en Av. Central", "ABIERTO");
-            servicio.agregarCaso(caso);
+            // Si el caso ya existe no lo vuelve a crear
+            if (servicio.buscarCasoPorId("C001") == null) {
 
-            // --- PERSONAS ---
-            Detective detective = new Detective("D01", "Laura Mendez", 38, "Homicidios", "Inspectora");
-            Sospechoso sospechoso = new Sospechoso("S01", "Carlos Ruiz", 29, "Antecedentes por robo", 7);
-            Victima victima = new Victima("V01", "Miguel Torres", 45, "Fallecido", "Homicidio");
-            Testigo testigo = new Testigo("T01", "Ana Gomez", 32, "Vio al sospechoso huir", false);
+                // --- CASO ---
+                Caso caso = new Caso("C001", "Homicidio en Av. Central", "ABIERTO");
+                servicio.agregarCaso(caso);
 
-            servicio.agregarPersona("C001", detective);
-            servicio.agregarPersona("C001", sospechoso);
-            servicio.agregarPersona("C001", victima);
-            servicio.agregarPersona("C001", testigo);
+                // --- PERSONAS ---
+                Detective detective = new Detective("D01", "Laura Mendez", 38, "Homicidios", "Inspectora");
+                Sospechoso sospechoso = new Sospechoso("S01", "Carlos Ruiz", 29, "Antecedentes por robo", 7);
+                Victima victima = new Victima("V01", "Miguel Torres", 45, "Fallecido", "Homicidio");
+                Testigo testigo = new Testigo("T01", "Ana Gomez", 32, "Vio al sospechoso huir", false);
 
-            // --- EVIDENCIAS ---
-            EvidenciaFisica ev1 = new EvidenciaFisica("E01", "Cuchillo", "2026-03-01",
-                    "Escena del crimen", "Activa", "Cuchillo de cocina", 0.3, "20x3cm", "Bodega A");
+                servicio.agregarPersona("C001", detective);
+                servicio.agregarPersona("C001", sospechoso);
+                servicio.agregarPersona("C001", victima);
+                servicio.agregarPersona("C001", testigo);
 
-            EvidenciaDigital ev2 = new EvidenciaDigital("E02", "Video camara", "2026-03-01",
-                    "Edificio contiguo", "Activa", "MP4", "a1b2c3d4e5f6", 150.5);
+                // --- EVIDENCIAS ---
+                EvidenciaFisica ev1 = new EvidenciaFisica("E01", "Cuchillo", "2026-03-01",
+                        "Escena del crimen", "Activa", "Cuchillo de cocina", 0.3, "20x3cm", "Bodega A");
 
-            EvidenciaForense ev3 = new EvidenciaForense("E03", "Muestra de sangre", "2026-03-01",
-                    "Escena del crimen", "En analisis", "ADN", "Laboratorio Central", "Pendiente");
+                EvidenciaDigital ev2 = new EvidenciaDigital("E02", "Video camara", "2026-03-01",
+                        "Edificio contiguo", "Activa", "MP4", "a1b2c3d4e5f6", 150.5);
 
-            servicio.agregarEvidencia("C001", ev1);
-            servicio.agregarEvidencia("C001", ev2);
-            servicio.agregarEvidencia("C001", ev3);
+                EvidenciaForense ev3 = new EvidenciaForense("E03", "Muestra de sangre", "2026-03-01",
+                        "Escena del crimen", "En analisis", "ADN", "Laboratorio Central", "Pendiente");
 
-            // --- ENTREVISTA Y REPORTE ---
-            Entrevista entrevista = new Entrevista(
-                    "EN01", "2026-03-02", "Sospechoso nervioso durante interrogatorio",
-                    detective, sospechoso);
+                servicio.agregarEvidencia("C001", ev1);
+                servicio.agregarEvidencia("C001", ev2);
+                servicio.agregarEvidencia("C001", ev3);
 
-            Reporte reporte = new Reporte(
-                    "R01", "Reporte inicial", "Se inicia investigacion por homicidio en Av. Central.");
+                // --- ENTREVISTA Y REPORTE ---
+                Entrevista entrevista = new Entrevista(
+                        "EN01", "2026-03-02", "Sospechoso nervioso durante interrogatorio",
+                        detective, sospechoso);
 
-            caso.agregarEntrevista(entrevista);
-            caso.agregarReporte(reporte);
+                Reporte reporte = new Reporte(
+                        "R01", "Reporte inicial", "Se inicia investigacion por homicidio en Av. Central.");
+
+                servicio.agregarEntrevista("C001", entrevista);
+                servicio.agregarReporte("C001", reporte);
+            }
 
             // IMPRESION ESTRUCTURADA
+            Caso caso = servicio.buscarCasoPorId("C001");
+
             System.out.println("========================================");
             System.out.println("  SISTEMA DE INVESTIGACIONES POLICIALES ");
             System.out.println("========================================");
@@ -98,7 +104,8 @@ public class Main {
             System.out.println(eliminada ? "  Eliminada correctamente." : "  No encontrada.");
 
             System.out.println("\n--- Prueba excepcion: persona duplicada ---");
-            servicio.agregarPersona("C001", detective);
+            Detective detective2 = new Detective("D01", "Laura Mendez", 38, "Homicidios", "Inspectora");
+            servicio.agregarPersona("C001", detective2);
 
         } catch (CasoCerradoException e) {
             System.out.println("Error caso cerrado: " + e.getMessage());

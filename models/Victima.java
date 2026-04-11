@@ -48,7 +48,7 @@ public class Victima extends Persona {
     // uso del toCSV()
     @Override
     public String toCSV() {
-        return "Víctima," + getId() + "," + getNombre() + "," + getEdad() + "," + estado + "," + tipoDelito;
+        return "VICTIMA," + getId() + "," + getNombre() + "," + getEdad() + "," + estado + "," + tipoDelito;
     }
 
     // fromCSV()
