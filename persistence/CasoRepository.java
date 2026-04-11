@@ -23,9 +23,9 @@ public class CasoRepository {
 
     public void guardarPersonas(String idCaso, List<Persona> personas) {
         List<String> lineas = cargarTodasLasLineas(ARCHIVO_PERSONAS);
-        lineas.removeIf(l -> l.startsWith(idCaso + ";"));
+        lineas.removeIf(l -> l.startsWith(idCaso + "|"));
         for (Persona p : personas) {
-            lineas.add(idCaso + ";" + p.toCSV());
+            lineas.add(idCaso + "|" + p.toCSV());
         }
         escribirLineas(ARCHIVO_PERSONAS, lineas);
     }
@@ -35,7 +35,7 @@ public class CasoRepository {
         List<String> lineas = cargarTodasLasLineas(ARCHIVO_PERSONAS);
 
         for (String linea : lineas) {
-            if (linea.startsWith(idCaso + ";")) {
+            if (linea.startsWith(idCaso + "|")) {
                 String datosPersona = linea.substring(idCaso.length() + 1);
                 try {
                     lista.add(Persona.fromCSV(datosPersona));
@@ -87,10 +87,10 @@ public class CasoRepository {
 
     public void guardarEvidencias(String idCaso, List<Evidencia> evidencias) {
         List<String> lineas = cargarTodasLasLineas(ARCHIVO_EVIDENCIAS);
-        lineas.removeIf(l -> l.startsWith(idCaso + ";"));
+        lineas.removeIf(l -> l.startsWith(idCaso + "|"));
 
         for (Evidencia e : evidencias) {
-            lineas.add(idCaso + ";" + e.toCSV());
+            lineas.add(idCaso + "|" + e.toCSV());
         }
 
         escribirLineas(ARCHIVO_EVIDENCIAS, lineas);
@@ -101,7 +101,7 @@ public class CasoRepository {
         List<String> lineas = cargarTodasLasLineas(ARCHIVO_EVIDENCIAS);
 
         for (String linea : lineas) {
-            if (linea.startsWith(idCaso + ";")) {
+            if (linea.startsWith(idCaso + "|")) {
                 String datosEvidencia = linea.substring(idCaso.length() + 1);
                 try {
                     lista.add(Evidencia.fromCSV(datosEvidencia));

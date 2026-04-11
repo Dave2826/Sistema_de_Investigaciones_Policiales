@@ -49,14 +49,14 @@ public class EvidenciaForense extends Evidencia {
 
     @Override
     public String toCSV() {
-        return "FORENSE," +
-                getIdEvidencia() + "," +
-                getDescripcion() + "," +
-                getFechaRecoleccion() + "," +
-                getLugarRecoleccion() + "," +
-                getEstado() + "," +
-                tipoAnalisis + "," +
-                laboratorio + "," +
+        return "FORENSE;" +
+                getIdEvidencia() + ";" +
+                getDescripcion() + ";" +
+                getFechaRecoleccion() + ";" +
+                getLugarRecoleccion() + ";" +
+                getEstado() + ";" +
+                tipoAnalisis + ";" +
+                laboratorio + ";" +
                 resultado;
     }
 
@@ -64,7 +64,7 @@ public class EvidenciaForense extends Evidencia {
         if (linea == null || linea.isBlank())
             throw new CSVInvalidoException("Línea CSV vacía o nula.");
 
-        String[] partes = linea.split(",");
+        String[] partes = linea.split(";");
 
         if (partes.length != 9)
             throw new CSVInvalidoException("Formato CSV inválido para EvidenciaForense.");

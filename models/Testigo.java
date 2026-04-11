@@ -44,12 +44,12 @@ public class Testigo extends Persona {
 
     // PERSISTENCIA (CSV)
     public String toCSV() {
-        return "TESTIGO," + getId() + "," + getNombre() + "," + getEdad() + "," + declaracion + "," + protegido;
+        return "TESTIGO;" + getId() + ";" + getNombre() + ";" + getEdad() + ";" + declaracion + ";" + protegido;
     }
 
     // fromCSV()
     public static Testigo fromCSV(String linea) throws CSVInvalidoException {
-        String[] partes = linea.split(",");
+        String[] partes = linea.split(";");
 
         if (partes.length < 6) {
             throw new CSVInvalidoException("Datos incompletos para Testigo" + linea);

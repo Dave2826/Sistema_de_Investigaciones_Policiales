@@ -47,11 +47,11 @@ public class Detective extends Persona {
     }
 
     public String toCSV() {
-        return "DETECTIVE," + getId() + "," + getNombre() + "," + getEdad() + "," + especialidad + "," + rango;
+        return "DETECTIVE;" + getId() + ";" + getNombre() + ";" + getEdad() + ";" + especialidad + ";" + rango;
     }
 
     public static Detective fromCSV(String linea) throws CSVInvalidoException {
-        String[] partes = linea.split(",");
+        String[] partes = linea.split(";");
 
         if (partes.length < 6) {
             throw new CSVInvalidoException("Datos incompletos para Detective" + linea);

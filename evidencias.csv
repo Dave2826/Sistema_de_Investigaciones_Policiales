@@ -1,2 +1,2 @@
-C001;FISICA,E01,Cuchillo,2026-03-01,Escena del crimen,Activa,Cuchillo de cocina,0.3,20x3cm,Bodega A
-C001;FORENSE,E03,Muestra de sangre,2026-03-01,Escena del crimen,En analisis,ADN,Laboratorio Central,Pendiente
+C001|FISICA;E01;Cuchillo;2026-03-01;Escena del crimen;Activa;Cuchillo de cocina;0.3;20x3cm;Bodega A
+C001|FORENSE;E03;Muestra de sangre;2026-03-01;Escena del crimen;En analisis;ADN;Laboratorio Central;Pendiente

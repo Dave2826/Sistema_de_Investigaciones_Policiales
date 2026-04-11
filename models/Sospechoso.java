@@ -61,13 +61,13 @@ public class Sospechoso extends Persona {
     // Método toCSV()
     @Override
     public String toCSV() {
-        return "Sospechoso" + "," + getId() + "," + getNombre() + "," + getEdad() + "," + antecedentes + ","
+        return "SOSPECHOSO;" + getId() + ";" + getNombre() + ";" + getEdad() + ";" + antecedentes + ";"
                 + nivelSospecha;
     }
 
     // fromCSV()
     public static Sospechoso fromCSV(String linea) throws CSVInvalidoException {
-        String[] partes = linea.split(",", -1);
+        String[] partes = linea.split(";", -1);
         if (partes.length != 6) {
             throw new CSVInvalidoException("Formato CSV inválido para Sospechoso." + linea);
         }

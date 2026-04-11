@@ -78,7 +78,7 @@ public abstract class Persona {
         if (linea == null || linea.isBlank())
             throw new CSVInvalidoException("Línea vacía");
 
-        String prefijo = linea.split(",")[0].toUpperCase();
+        String prefijo = linea.split(";")[0].toUpperCase();
 
         switch (prefijo) {
             case "DETECTIVE":

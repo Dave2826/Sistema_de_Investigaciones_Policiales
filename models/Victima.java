@@ -48,12 +48,12 @@ public class Victima extends Persona {
     // uso del toCSV()
     @Override
     public String toCSV() {
-        return "VICTIMA," + getId() + "," + getNombre() + "," + getEdad() + "," + estado + "," + tipoDelito;
+        return "VICTIMA;" + getId() + ";" + getNombre() + ";" + getEdad() + ";" + estado + ";" + tipoDelito;
     }
 
     // fromCSV()
     public static Victima fromCSV(String linea) throws CSVInvalidoException {
-        String[] partes = linea.split(",", -1);
+        String[] partes = linea.split(";", -1);
         if (partes.length != 6) {
             throw new CSVInvalidoException("Formato CSV inválido para la víctima." + linea);
         }
@@ -72,6 +72,6 @@ public class Victima extends Persona {
     // Uso del toString()
     @Override
     public String toString() {
-        return "Víctima" + ", estado: " + estado + ", tipo de delito: " + tipoDelito;
+        return super.toString() + ", Estado: " + estado + ", Tipo de delito: " + tipoDelito;
     }
 }

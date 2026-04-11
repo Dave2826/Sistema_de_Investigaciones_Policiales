@@ -51,15 +51,15 @@ public class EvidenciaFisica extends Evidencia {
 
     @Override
     public String toCSV() {
-        return "FISICA," +
-                getIdEvidencia() + "," +
-                getDescripcion() + "," +
-                getFechaRecoleccion() + "," +
-                getLugarRecoleccion() + "," +
-                getEstado() + "," +
-                objeto + "," +
-                peso + "," +
-                dimensiones + "," +
+        return "FISICA;" +
+                getIdEvidencia() + ";" +
+                getDescripcion() + ";" +
+                getFechaRecoleccion() + ";" +
+                getLugarRecoleccion() + ";" +
+                getEstado() + ";" +
+                objeto + ";" +
+                peso + ";" +
+                dimensiones + ";" +
                 ubicacionAlmacen;
     }
 
@@ -67,7 +67,7 @@ public class EvidenciaFisica extends Evidencia {
         if (linea == null || linea.isBlank())
             throw new CSVInvalidoException("Línea CSV vacía o nula.");
 
-        String[] partes = linea.split(",");
+        String[] partes = linea.split(";");
 
         if (partes.length != 10)
             throw new CSVInvalidoException("Formato CSV inválido para EvidenciaFisica.");

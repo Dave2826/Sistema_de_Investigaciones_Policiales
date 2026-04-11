@@ -1,4 +1,4 @@
-C001;DETECTIVE,D01,Laura Mendez,38,Homicidios,Inspectora
-C001;Sospechoso,S01,Carlos Ruiz,29,Antecedentes por robo,7
-C001;VICTIMA,V01,Miguel Torres,45,Fallecido,Homicidio
-C001;TESTIGO,T01,Ana Gomez,32,Vio al sospechoso huir,false
+C001|DETECTIVE;D01;Laura Mendez;38;Homicidios;Inspectora
+C001|SOSPECHOSO;S01;Carlos Ruiz;29;Antecedentes por robo;7
+C001|VICTIMA;V01;Miguel Torres;45;Fallecido;Homicidio
+C001|TESTIGO;T01;Ana Gomez;32;Vio al sospechoso huir;false

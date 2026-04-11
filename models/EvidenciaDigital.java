@@ -46,14 +46,14 @@ public class EvidenciaDigital extends Evidencia {
 
     @Override
     public String toCSV() {
-        return "DIGITAL," +
-                getIdEvidencia() + "," +
-                getDescripcion() + "," +
-                getFechaRecoleccion() + "," +
-                getLugarRecoleccion() + "," +
-                getEstado() + "," +
-                formato + "," +
-                hashMD5 + "," +
+        return "DIGITAL;" +
+                getIdEvidencia() + ";" +
+                getDescripcion() + ";" +
+                getFechaRecoleccion() + ";" +
+                getLugarRecoleccion() + ";" +
+                getEstado() + ";" +
+                formato + ";" +
+                hashMD5 + ";" +
                 tamanoArchivo;
     }
 
@@ -61,7 +61,7 @@ public class EvidenciaDigital extends Evidencia {
         if (linea == null || linea.isBlank())
             throw new CSVInvalidoException("Línea CSV vacía o nula.");
 
-        String[] partes = linea.split(",");
+        String[] partes = linea.split(";");
 
         if (partes.length != 9)
             throw new CSVInvalidoException("Formato CSV inválido para EvidenciaDigital.");

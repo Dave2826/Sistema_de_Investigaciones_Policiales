@@ -85,10 +85,10 @@ public abstract class Evidencia implements Documentable {
     }
 
     public String toCSV() {
-        return idEvidencia + "," +
-                descripcion + "," +
-                fechaRecoleccion + "," +
-                lugarRecoleccion + "," +
+        return idEvidencia + ";" +
+                descripcion + ";" +
+                fechaRecoleccion + ";" +
+                lugarRecoleccion + ";" +
                 estado;
     }
 
@@ -96,7 +96,7 @@ public abstract class Evidencia implements Documentable {
         if (linea == null || linea.isBlank())
             throw new CSVInvalidoException("Línea CSV vacía o nula.");
 
-        String prefijo = linea.split(",")[0].toUpperCase();
+        String prefijo = linea.split(";")[0].toUpperCase();
 
         switch (prefijo) {
             case "FISICA":
