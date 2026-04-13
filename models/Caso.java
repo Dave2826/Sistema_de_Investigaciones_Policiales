@@ -2,6 +2,7 @@ package models;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import exceptions.CSVInvalidoException;
 
@@ -54,8 +55,15 @@ public class Caso {
         return Collections.unmodifiableList(evidencias);
     }
 
-    public List<Evidencia> getEvidenciasInternas() {
-        return evidencias;
+    public boolean eliminarEvidencia(String idEvidencia) {
+        Iterator<Evidencia> iterator = evidencias.iterator();
+        while (iterator.hasNext()) {
+            if (iterator.next().getIdEvidencia().equals(idEvidencia)) {
+                iterator.remove();
+                return true;
+            }
+        }
+        return false;
     }
 
     public List<Entrevista> getEntrevistas() {

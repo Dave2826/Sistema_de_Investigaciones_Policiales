@@ -137,6 +137,12 @@ public class CasoRepository {
             if (linea.startsWith(idCaso + "|")) {
                 String datosEntrevista = linea.substring(idCaso.length() + 1);
                 String[] partes = datosEntrevista.split(";", -1);
+
+                // Desescapar cada valor en la capa de persistencia
+                for (int i = 0; i < partes.length; i++) {
+                    partes[i] = desescaparCSV(partes[i]);
+                }
+
                 lista.add(partes);
             }
         }
@@ -206,5 +212,14 @@ public class CasoRepository {
         } catch (IOException e) {
             System.out.println("Error al escribir " + archivo + ": " + e.getMessage());
         }
+    }
+
+    private static String desescaparCSV(String valor) {
+        if (valor == null)
+            return "";
+        String v = valor.trim();
+        if (v.startsWith("\"") && v.endsWith("\""))
+            v = v.substring(1, v.length() - 1);
+        return v.replace("\"\"", "\"");
     }
 }

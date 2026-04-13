@@ -1,7 +1,6 @@
 package service;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import exceptions.CSVInvalidoException;
 import exceptions.CasoCerradoException;
@@ -54,8 +53,8 @@ public class CasoServicio {
                         continue;
                     }
 
-                    String idDetective = desescaparCSV(partes[3]);
-                    String idEntrevistado = desescaparCSV(partes[4]);
+                    String idDetective = partes[3];
+                    String idEntrevistado = partes[4];
 
                     Detective detective = null;
                     Persona entrevistado = null;
@@ -247,25 +246,12 @@ public class CasoServicio {
         if ("CERRADO".equalsIgnoreCase(caso.getEstado()))
             throw new CasoCerradoException("El caso " + idCaso + " está cerrado.");
 
-        Iterator<Evidencia> iterator = caso.getEvidenciasInternas().iterator();
+        boolean eliminada = caso.eliminarEvidencia(idEvidencia);
 
-        while (iterator.hasNext()) {
-            if (iterator.next().getIdEvidencia().equals(idEvidencia)) {
-                iterator.remove();
-                repository.guardarEvidencias(idCaso, caso.getEvidencias());
-                return true;
-            }
+        if (eliminada) {
+            repository.guardarEvidencias(idCaso, caso.getEvidencias());
         }
 
-        return false;
-    }
-
-    private static String desescaparCSV(String valor) {
-        if (valor == null)
-            return "";
-        String v = valor.trim();
-        if (v.startsWith("\"") && v.endsWith("\""))
-            v = v.substring(1, v.length() - 1);
-        return v.replace("\"\"", "\"");
+        return eliminada;
     }
 }
