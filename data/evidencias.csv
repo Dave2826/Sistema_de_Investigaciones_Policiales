@@ -1,0 +1,6 @@
+C001|FISICA;E01;Cuchillo;2026-03-01;Escena del crimen;Activa;Cuchillo de cocina;0.3;20x3cm;Bodega A
+C001|DIGITAL;E02;Video camara;2026-03-01;Edificio contiguo;Activa;MP4;a1b2c3d4e5f6;150.5
+C001|FORENSE;E03;Muestra de sangre;2026-03-01;Escena del crimen;En analisis;ADN;Laboratorio Central;Pendiente
+C002|FORENSE;E04;Huella dactilar;2026-03-15;Boveda del banco;Activa;Dactiloscopia;Laboratorio Forense;En proceso
+C002|DIGITAL;E05;Video de seguridad;2026-03-15;Banco Nacional;Activa;AVI;f7g8h9i0j1k2;2048.0
+C002|FISICA;E06;Fibras de ropa;2026-03-15;Entrada del banco;En analisis;Tela negra;0.01;5x2cm;Bodega B

@@ -2,3 +2,7 @@ C001|DETECTIVE;D01;Laura Mendez;38;Homicidios;Inspectora
 C001|SOSPECHOSO;S01;Carlos Ruiz;29;Antecedentes por robo;7
 C001|VICTIMA;V01;Miguel Torres;45;Fallecido;Homicidio
 C001|TESTIGO;T01;Ana Gomez;32;Vio al sospechoso huir;false
+C002|DETECTIVE;D02;Ricardo Pena;42;Robos;Capitan
+C002|SOSPECHOSO;S02;Fernando Lopez;35;Reincidente en robos;9
+C002|VICTIMA;V02;Banco Nacional;0;Afectado;Robo
+C002|TESTIGO;T02;Maria Sanchez;28;Vio vehiculo sospechoso;true

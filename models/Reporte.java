@@ -9,13 +9,13 @@ public class Reporte implements Documentable {
     private String contenido;
 
     public Reporte(String id, String titulo, String contenido) {
-        if (id == null || id.isEmpty()) {
+        if (id == null || id.isBlank()) {
             throw new IllegalArgumentException("El id no puede ser nulo o vacio");
         }
-        if (titulo == null || titulo.isEmpty()) {
+        if (titulo == null || titulo.isBlank()) {
             throw new IllegalArgumentException("El titulo no puede ser nulo o vacio");
         }
-        if (contenido == null || contenido.isEmpty()) {
+        if (contenido == null || contenido.isBlank()) {
             throw new IllegalArgumentException("El contenido no puede ser nulo o vacio");
         }
 

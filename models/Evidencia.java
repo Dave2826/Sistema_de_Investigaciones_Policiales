@@ -110,13 +110,40 @@ public abstract class Evidencia implements Documentable {
         }
     }
 
+    /**
+     * Retorna el tipo de evidencia para impresion.
+     * Las subclases deben sobreescribir este metodo.
+     */
+    public String getTipo() {
+        return "General";
+    }
+
+    /**
+     * Construye la seccion base del formato de impresion.
+     */
+    protected String formatoBase() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("  +------------------------------------------+\n");
+        sb.append(String.format("  |  %-40s|\n", "EVIDENCIA " + getTipo().toUpperCase()));
+        sb.append("  +------------------------------------------+\n");
+        sb.append(String.format("  |  %-14s: %-24s|\n", "ID", idEvidencia));
+        sb.append(String.format("  |  %-14s: %-24s|\n", "Descripcion", descripcion));
+        sb.append(String.format("  |  %-14s: %-24s|\n", "Fecha", fechaRecoleccion));
+        sb.append(String.format("  |  %-14s: %-24s|\n", "Lugar", lugarRecoleccion));
+        sb.append(String.format("  |  %-14s: %-24s|\n", "Estado", estado));
+        return sb.toString();
+    }
+
+    /**
+     * Cierra el formato de la tarjeta.
+     */
+    protected String formatoCierre() {
+        return "  +------------------------------------------+";
+    }
+
     @Override
     public String toString() {
-        return "ID: " + idEvidencia +
-                "\nDescripcion: " + descripcion +
-                "\nFecha: " + fechaRecoleccion +
-                "\nLugar: " + lugarRecoleccion +
-                "\nEstado: " + estado;
+        return formatoBase() + formatoCierre();
     }
 
     public abstract String documentar();

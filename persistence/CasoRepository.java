@@ -3,7 +3,6 @@ package persistence;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
-
 import exceptions.CSVInvalidoException;
 import models.Caso;
 import models.Entrevista;
@@ -13,11 +12,19 @@ import models.Reporte;
 
 public class CasoRepository {
 
-    private static final String ARCHIVO_PERSONAS = "personas.csv";
-    private static final String ARCHIVO_CASOS = "casos.csv";
-    private static final String ARCHIVO_EVIDENCIAS = "evidencias.csv";
-    private static final String ARCHIVO_ENTREVISTAS = "entrevistas.csv";
-    private static final String ARCHIVO_REPORTES = "reportes.csv";
+    private static final String CARPETA_DATOS = "data";
+    private static final String ARCHIVO_PERSONAS = CARPETA_DATOS + "/personas.csv";
+    private static final String ARCHIVO_CASOS = CARPETA_DATOS + "/casos.csv";
+    private static final String ARCHIVO_EVIDENCIAS = CARPETA_DATOS + "/evidencias.csv";
+    private static final String ARCHIVO_ENTREVISTAS = CARPETA_DATOS + "/entrevistas.csv";
+    private static final String ARCHIVO_REPORTES = CARPETA_DATOS + "/reportes.csv";
+
+    public CasoRepository() {
+        File carpeta = new File(CARPETA_DATOS);
+        if (!carpeta.exists()) {
+            carpeta.mkdirs();
+        }
+    }
 
     // ===================== PERSONAS =====================
 
@@ -221,5 +228,26 @@ public class CasoRepository {
         if (v.startsWith("\"") && v.endsWith("\""))
             v = v.substring(1, v.length() - 1);
         return v.replace("\"\"", "\"");
+    }
+
+    // ================ Eliminar Caso =====================
+
+    public void eliminarCaso(String idCaso, List<Caso> casosRestantes) {
+        guardarCasos(casosRestantes);
+        List<String> lineasPersonas = cargarTodasLasLineas(ARCHIVO_PERSONAS);
+        lineasPersonas.removeIf(l -> l.startsWith(idCaso + "|"));
+        escribirLineas(ARCHIVO_PERSONAS, lineasPersonas);
+
+        List<String> lineasEvidencias = cargarTodasLasLineas(ARCHIVO_EVIDENCIAS);
+        lineasEvidencias.removeIf(l -> l.startsWith(idCaso + "|"));
+        escribirLineas(ARCHIVO_EVIDENCIAS, lineasEvidencias);
+
+        List<String> lineasEntrevistas = cargarTodasLasLineas(ARCHIVO_ENTREVISTAS);
+        lineasEntrevistas.removeIf(l -> l.startsWith(idCaso + "|"));
+        escribirLineas(ARCHIVO_ENTREVISTAS, lineasEntrevistas);
+
+        List<String> lineasReportes = cargarTodasLasLineas(ARCHIVO_REPORTES);
+        lineasReportes.removeIf(l -> l.startsWith(idCaso + "|"));
+        escribirLineas(ARCHIVO_REPORTES, lineasReportes);
     }
 }

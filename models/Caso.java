@@ -100,7 +100,7 @@ public class Caso {
 
     public String generarResumen() {
         StringBuilder sb = new StringBuilder();
-        sb.append("===== RESUMEN DEL CASO =====\n");
+        sb.append("\n===== RESUMEN DEL CASO =====\n");
         sb.append("ID    : ").append(idCaso).append("\n");
         sb.append("Título: ").append(titulo).append("\n");
         sb.append("Estado: ").append(estado).append("\n");
@@ -133,8 +133,12 @@ public class Caso {
         }
         if (!evidencias.isEmpty()) {
             System.out.println("\n===== DETALLE DE EVIDENCIAS =====");
-            for (Evidencia e : evidencias)
-                e.mostrarDetalles();
+            int num = 1;
+            for (Evidencia e : evidencias) {
+                System.out.println("\n  Evidencia #" + num + ":");
+                System.out.println(e.toString());
+                num++;
+            }
         }
     }
 

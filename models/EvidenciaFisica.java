@@ -91,11 +91,20 @@ public class EvidenciaFisica extends Evidencia {
     }
 
     @Override
+    public String getTipo() {
+        return "Fisica";
+    }
+
+    @Override
     public String toString() {
-        return super.toString() +
-                "\nObjeto: " + objeto +
-                "\nPeso: " + peso + " kg" +
-                "\nDimensiones: " + dimensiones +
-                "\nUbicación: " + ubicacionAlmacen;
+        StringBuilder sb = new StringBuilder();
+        sb.append(formatoBase());
+        sb.append("  |------------------------------------------|\n");
+        sb.append(String.format("  |  %-14s: %-24s|\n", "Objeto", objeto));
+        sb.append(String.format("  |  %-14s: %-24s|\n", "Peso", peso + " kg"));
+        sb.append(String.format("  |  %-14s: %-24s|\n", "Dimensiones", dimensiones));
+        sb.append(String.format("  |  %-14s: %-24s|\n", "Ubicacion", ubicacionAlmacen));
+        sb.append(formatoCierre());
+        return sb.toString();
     }
 }

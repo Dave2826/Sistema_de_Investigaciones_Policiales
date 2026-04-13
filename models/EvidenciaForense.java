@@ -82,10 +82,19 @@ public class EvidenciaForense extends Evidencia {
     }
 
     @Override
+    public String getTipo() {
+        return "Forense";
+    }
+
+    @Override
     public String toString() {
-        return super.toString() +
-                "\nTipo Análisis: " + tipoAnalisis +
-                "\nLaboratorio: " + laboratorio +
-                "\nResultado: " + resultado;
+        StringBuilder sb = new StringBuilder();
+        sb.append(formatoBase());
+        sb.append("  |------------------------------------------|\n");
+        sb.append(String.format("  |  %-14s: %-24s|\n", "Tipo Analisis", tipoAnalisis));
+        sb.append(String.format("  |  %-14s: %-24s|\n", "Laboratorio", laboratorio));
+        sb.append(String.format("  |  %-14s: %-24s|\n", "Resultado", resultado));
+        sb.append(formatoCierre());
+        return sb.toString();
     }
 }

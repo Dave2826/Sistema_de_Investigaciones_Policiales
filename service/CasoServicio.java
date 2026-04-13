@@ -254,4 +254,12 @@ public class CasoServicio {
 
         return eliminada;
     }
+
+    public void eliminarCaso(String idCaso) {
+        Caso caso = buscarCasoPorId(idCaso);
+        if (caso != null) {
+            casos.remove(caso);
+        }
+        repository.eliminarCaso(idCaso, casos);
+    }
 }

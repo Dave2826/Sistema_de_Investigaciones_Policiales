@@ -84,10 +84,19 @@ public class EvidenciaDigital extends Evidencia {
     }
 
     @Override
+    public String getTipo() {
+        return "Digital";
+    }
+
+    @Override
     public String toString() {
-        return super.toString() +
-                "\nFormato: " + formato +
-                "\nHash MD5: " + hashMD5 +
-                "\nTamaño Archivo: " + tamanoArchivo + " MB";
+        StringBuilder sb = new StringBuilder();
+        sb.append(formatoBase());
+        sb.append("  |------------------------------------------|\n");
+        sb.append(String.format("  |  %-14s: %-24s|\n", "Formato", formato));
+        sb.append(String.format("  |  %-14s: %-24s|\n", "Hash MD5", hashMD5));
+        sb.append(String.format("  |  %-14s: %-24s|\n", "Tamano", tamanoArchivo + " MB"));
+        sb.append(formatoCierre());
+        return sb.toString();
     }
 }
