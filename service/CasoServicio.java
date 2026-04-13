@@ -61,7 +61,7 @@ public class CasoServicio {
                     Persona entrevistado = null;
 
                     for (Persona p : caso.getPersonas()) {
-                        if (p.getId().equals(idDetective) && p instanceof Detective)
+                        if (p.getId().equals(idDetective) && p.getRol().equalsIgnoreCase("Detective"))
                             detective = (Detective) p;
 
                         if (p.getId().equals(idEntrevistado))

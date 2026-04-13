@@ -134,11 +134,7 @@ public class Caso {
         return String.join(";",
                 escaparCSV(idCaso),
                 escaparCSV(titulo),
-                escaparCSV(estado),
-                String.valueOf(personas.size()),
-                String.valueOf(evidencias.size()),
-                String.valueOf(entrevistas.size()),
-                String.valueOf(reportes.size()));
+                escaparCSV(estado));
     }
 
     public static Caso fromCSV(String linea) throws CSVInvalidoException {
