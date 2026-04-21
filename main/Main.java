@@ -39,6 +39,17 @@ public class Main {
         sc.nextLine();
     }
 
+    // Lee la opcion del menu como texto para evitar InputMismatchException.
+    private static int leerOpcionMenu(Scanner sc) {
+        String entrada = sc.nextLine().trim();
+
+        try {
+            return Integer.parseInt(entrada);
+        } catch (NumberFormatException e) {
+            return -1;
+        }
+    }
+
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         CasoServicio servicio = new CasoServicio();
@@ -60,8 +71,7 @@ public class Main {
             System.out.println("0. Salir");
             System.out.print("Seleccione una opcion: ");
 
-            opcion = sc.nextInt();
-            sc.nextLine();
+            opcion = leerOpcionMenu(sc);
 
             switch (opcion) {
 
@@ -206,7 +216,7 @@ public class Main {
                     break;
 
                 default:
-                    System.out.println("\nOpcion invalida. Intente de nuevo.");
+                    System.out.println("\nEntrada invalida. Ingrese un numero del 0 al 6.");
                     pausar(sc);
                     break;
             }
